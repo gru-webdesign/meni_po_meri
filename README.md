@@ -3,11 +3,12 @@
 Lični plan ishrane i praćenje, kao Android aplikacija.
 
 - Profil korisnika (čarobnjak pri prvom pokretanju) iz kog se računa sve: kalorije, makroi, voda, hod, trening
-- Adaptivni jelovnik: biblioteka od 45 obroka sa oznakama (gluten, laktoza, riba, meso...), nedeljna rotacija, porcije skalirane na dnevni cilj, zamena jela jednim dodirom
+- Adaptivni jelovnik: biblioteka od 78 obroka sa oznakama (gluten, laktoza, riba, meso...), nedeljna rotacija, porcije skalirane na dnevni cilj, zamena jela jednim dodirom
 - Nedeljna provera tempa: ako kilaža stoji uz doslednost, -100 kcal; ako ide prebrzo, +100 kcal; usporavanje na zadnjih 5 kg i prelaz na održavanje
 - Tracker: obroci (ceo ili pola), hrana van plana, voda, gazirano, hod, trening, san i energija, kilaža, obim struka, kalorije za 7 dana
 - Trening iz profila: hod koji raste po nedeljama, vežbe za leđa ili snagu po izabranim danima
-- Savetnik bez interneta: baza znanja o ishrani, treningu, kičmi, imunitetu i snu, plus odgovori iz tvog plana i dnevnika
+- Savetnik bez interneta: 75 tema, kalorije za 209 jela i pića, razume padeže, greške u kucanju i nastavak razgovora; odgovara iz tvog plana i dnevnika (šta je za koji obrok, zamene, preostale kalorije, nedeljni pregled, šta da napravim od onoga što imam)
+- Pitanja na koja savetnik ne zna odgovor beleže se u profilu, da bi se baza dopunjavala
 - Spisak za kupovinu, podsetnici, rezervna kopija
 
 ## Kako dobiti APK
