@@ -8,6 +8,10 @@
   "plugins": {
     "LocalNotifications": {
       "iconColor": "#12803E"
+    },
+    "SystemBars": {
+      "insetsHandling": "css",
+      "style": "DEFAULT"
     }
   }
 }

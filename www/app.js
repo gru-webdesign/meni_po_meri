@@ -160,6 +160,7 @@ function viewDanas(){
   const tips=[['Prvo doručak, pa kafa','Kafa na prazan stomak iritira želudac i pojačava glad posle podne.'],['Čaša vode uz svaku kafu','Najlakši način da dođeš do cilja za vodu.'],['Užinu spakuj ujutru','Glad posle posla je trenutak kad se naručuje dostava.'],['Kuvaj duplo','Ostaci od ručka su sutrašnji obrok bez kuvanja.'],['Ustani na 45 minuta','Dva minuta hoda rasterećuju kičmu i troše kalorije.'],['Večera do 20h','Lakša i ranija večera pomaže stomaku i snu.'],['Ekran dalje sat pre spavanja','Bolji san znači manje gladi sutradan i jači imunitet.']];
   const tip=tips[(dIdx(TODAY)+weekNo())%tips.length];
   return `${phead(greet+(S.p.name?', '+esc(S.p.name.split(' ')[0]):''),esc(dateStr.charAt(0).toUpperCase()+dateStr.slice(1)),`<span class="pill soft">${ph[0]} · N${weekNo()}</span>`)}
+  ${reportCard()}
   <section class="hero" aria-label="Dnevni pregled">
     <div class="ring" role="img" aria-label="${R(tot[0])} od ${mt.k} kalorija">
       <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/><circle class="val ${left<0?'over':''}" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg>
@@ -181,14 +182,15 @@ function viewDanas(){
   </section>
   <section class="card">
     <div class="sec-title"><h2>Obroci danas</h2><button class="btn ghost sm" data-sheet="add">${ic('plus','sm')}Van plana</button></div>
-    <div class="tl">${pl.map(x=>{const e=d.eat[x.slot];return `
+    <div class="tl">${pl.map(x=>{const e=d.eat[x.slot];return `<div class="sw" data-slot="${x.slot}"><div class="sw-bg"><span class="sw-l">${ic('check','sm')}Pojeo sam</span><span class="sw-r">Zameni${ic('arrows-clockwise','sm')}</span></div>
       <div class="mrow ${e?'done':''} ${next&&x.slot===next.slot?'is-next':''}"><span class="time">${x.time}</span>
-        <button class="open" data-meal-open="${x.slot}" data-key="${TODAY}"><span class="w">${TYPE_NAMES[x.type]}${e&&e.fr<1?' · pola':''}</span><span class="nm">${esc(x.meal.n)}</span><span class="kc">${R(x.meal.nt[0])} kcal · P ${R(x.meal.nt[1])} g</span></button>
-        <button class="tick ${e?'on':''} ${e&&e.fr<1?'half':''}" data-eat="${x.slot}" data-fr="${e?0:1}" aria-pressed="${!!e}" aria-label="${e?'Poništi':'Pojeo sam'}: ${esc(x.meal.n)}">${ic('check','sm')}</button></div>`}).join('')}
-      ${d.extra.map((x,i)=>`<div class="mrow extra"><span class="time">${esc(x.t||'')}</span><div class="open"><span class="w">Van plana</span><span class="nm">${esc(x.n)}</span><span class="kc">${R(x.k)} kcal${x.p?' · P '+R(x.p)+' g':''}</span></div><button class="tick del" data-delx="${i}" aria-label="Obriši ${esc(x.n)}">${ic('x','sm')}</button></div>`).join('')}
+        <button class="open" data-meal-open="${x.slot}" data-key="${TODAY}"><span class="w">${TYPE_NAMES[x.type]}${e&&e.fr<1?' · pola':''}${S.fav[x.meal.id]?`<span class="fav-dot">${ic('heart-fill')}</span>`:''}</span><span class="nm">${esc(x.meal.n)}</span><span class="kc">${R(x.meal.nt[0])} kcal · P ${R(x.meal.nt[1])} g</span></button>
+        <button class="tick ${e?'on':''} ${e&&e.fr<1?'half':''}" data-eat="${x.slot}" data-fr="${e?0:1}" aria-pressed="${!!e}" aria-label="${e?'Poništi':'Pojeo sam'}: ${esc(x.meal.n)}">${ic('check','sm')}</button></div></div>`}).join('')}
+      ${d.extra.map((x,i)=>`<div class="mrow extra" style="border-top:1px solid var(--line)"><span class="time">${esc(x.t||'')}</span><div class="open"><span class="w">Van plana</span><span class="nm">${esc(x.n)}</span><span class="kc">${R(x.k)} kcal${x.p?' · P '+R(x.p)+' g':''}</span></div><button class="tick del" data-delx="${i}" aria-label="Obriši ${esc(x.n)}">${ic('x','sm')}</button></div>`).join('')}
     </div>
+    ${Object.keys(S.days).length<4?`<p class="swipe-hint">Savet: prevuci obrok udesno da ga upišeš, ulevo da ga zameniš.</p>`:''}
   </section>
-  ${sleepCard(d)}
+  ${checkinCard(d)}
   <section class="card train-card">
     <div class="sec-title"><h2>${esc(tr.title)}</h2><button class="btn ghost sm" data-go="trening">Detalji</button></div>
     <div class="row" style="flex-wrap:wrap;gap:8px"><span class="pill line">${ic('footprints','sm')}Hod ${wt} min</span>${tr.ex.length?`<span class="pill line">${ic('barbell','sm')}${tr.ex.length} vežbi</span>`:''}${d.ex?`<span class="pill soft">${ic('check','sm')}Urađeno</span>`:''}</div>
@@ -270,11 +272,10 @@ function viewNapredak(){
     <p class="small muted" style="margin-top:6px">${esc(PHASES[phase()][1])} Kako kilaža pada, potrošnja se preračunava i porcije se same smanjuju.</p>
     <button class="btn ghost sm" id="reviewNow" style="margin-top:12px">${ic('arrows-clockwise','sm')}Proveri tempo sada</button>
   </section>
-  <section class="card">
-    <div class="sec-title"><h2>Kalorije, 7 dana</h2>${avgK.length?`<span class="pill line n">prosek ${R(avgK.reduce((a,b)=>a+b.t,0)/avgK.length)}</span>`:''}</div>
-    <div class="kbars">${last7.map(x=>`<div class="kb"><div class="kb-col"><i class="${x.t>mt.k*1.05?'over':''}" style="height:${x.t/maxK*100}%"></i><s style="bottom:${mt.k/maxK*100}%"></s></div><span class="${x.k===TODAY?'cur':''}">${x.l}</span></div>`).join('')}</div>
-    <p class="small muted" style="margin-top:8px">Linija je tvoj cilj od ${mt.k} kcal.</p>
-  </section>
+  ${heatCard()}
+  ${macroCard()}
+  ${insightsCard()}
+  ${badgesCard()}
   <section class="card">
     <div class="sec-title"><h2>Obim struka</h2>${ic('ruler')}</div>
     <div class="winput" style="margin-top:0"><input type="number" id="waistIn" inputmode="decimal" step="0.5" placeholder="Obim u cm, u visini pupka" aria-label="Obim struka u cm"><button class="btn ghost" id="waistAdd">Upiši</button></div>
@@ -364,8 +365,8 @@ function viewProfil(){
     <div class="fld" style="margin-bottom:12px"><span>Izgled</span><div class="seg theme-seg" role="radiogroup" aria-label="Izgled">${[['light','Svetla'],['dark','Tamna'],['auto','Kao telefon']].map(o=>`<button type="button" role="radio" aria-checked="${(S.theme||'auto')===o[0]}" class="${(S.theme||'auto')===o[0]?'on':''}" data-theme="${o[0]}">${o[1]}</button>`).join('')}</div></div>
     <label class="toggle" for="notifT">Podsetnici za obroke, vodu i šetnju<input type="checkbox" class="switch" id="notifT" ${S.notif?'checked':''}></label>
     <label class="toggle" for="gramsT">Prikaži grame pored domaćih mera<input type="checkbox" class="switch" id="gramsT" ${S.grams?'checked':''}></label>
-    <div style="display:grid;gap:8px;margin-top:12px"><div class="block-lbl" style="margin:0">Rezervna kopija</div><p class="small muted">Podaci su samo na ovom telefonu. Pre brisanja aplikacije ili promene telefona kopiraj ih i sačuvaj u beleškama.</p>
-    <div class="row" style="flex-wrap:wrap"><button class="btn ghost sm" id="bkCopy">${ic('copy','sm')}Kopiraj podatke</button><button class="btn ghost sm" id="bkRestore">Vrati podatke</button></div></div>
+    <div style="display:grid;gap:8px;margin-top:12px"><div class="block-lbl" style="margin:0">Rezervna kopija</div><p class="small muted">Podaci se čuvaju na telefonu i u Android rezervnoj kopiji. Za prelazak na drugi telefon sačuvaj fajl (Drive, Viber, mejl) i učitaj ga tamo.</p>
+    <div class="row" style="flex-wrap:wrap"><button class="btn ghost sm" id="bkFile">${ic('download-simple','sm')}Sačuvaj u fajl</button><button class="btn ghost sm" id="bkLoad">${ic('upload-simple','sm')}Učitaj iz fajla</button><button class="btn ghost sm" id="bkCopy">${ic('copy','sm')}Kopiraj tekst</button><button class="btn ghost sm" id="bkRestore">Nalepi tekst</button></div></div>
     <div style="margin-top:14px"><button class="btn ghost sm" id="resetBtn">${ic('arrows-clockwise','sm')}Kreni plan od danas</button>
     <div id="resetConfirm" hidden class="err" style="margin-top:10px;display:grid;gap:10px"><span>Plan se vraća na nedelju 1. Upisi i kilaža ostaju.</span><div class="row"><button class="btn redb sm" id="resetYes">Kreni ispočetka</button><button class="btn ghost sm" id="resetNo">Odustani</button></div></div></div>
   </section>`;
@@ -416,11 +417,13 @@ function mealSheet(key,slot){
   const x=planFor(key)[slot],m=x.meal,t=m.nt,isToday=key===TODAY,e=isToday&&dayOf().eat[slot],pp=S.p.partner==='da';
   return `<div class="sheet-head"><div><div class="w">${DAYN[dIdx(key)]} · ${TYPE_NAMES[x.type]} · ${x.time}</div><h2 id="sheetTitle">${esc(m.n)}</h2></div>${closeBtn}</div>
   <div class="nut"><div><b>${R(t[0])}</b><span>kcal</span></div><div><b>${R(t[1])}</b><span>proteini</span></div><div><b>${R(t[2])}</b><span>UH</span></div><div><b>${R(t[3])}</b><span>masti</span></div><div><b>${R(t[4])}</b><span>vlakna</span></div></div>
+  <div class="prefs"><button class="fav ${S.fav[m.id]?'on':''}" data-fav="${m.id}" aria-pressed="${!!S.fav[m.id]}">${ic(S.fav[m.id]?'heart-fill':'heart','sm')}${S.fav[m.id]?'Omiljeno':'Volim ovo'}</button><button class="dis ${S.dis[m.id]?'on':''}" data-dis="${m.id}" data-key="${key}" data-slot="${slot}" aria-pressed="${!!S.dis[m.id]}">${ic(S.dis[m.id]?'thumbs-down-fill':'thumbs-down','sm')}${S.dis[m.id]?'Ne nudi više':'Ne sviđa mi se'}</button></div>
   <div class="block-lbl">Šta ti treba</div>
   <div class="ingr">${m.items.map(it=>`<div><span>${esc(shortName(it.k))}</span><span class="q">${esc(measure(it))}${S.grams?`<span class="g">${R(it.q*it.g)} g</span>`:''}</span></div>`).join('')}</div>
   ${pp?`<div class="partner">${ic('users')}<span>Partner: isti obrok, ${R(S.p.partnerPct*100)}% tvoje porcije, oko ${R(t[0]*S.p.partnerPct)} kcal</span></div>`:''}
   <div class="block-lbl">Priprema</div><p class="prep">${esc(m.r)}</p>
   <div class="sheet-actions">
+    <button class="btn ghost block" data-cook="${slot}" data-key="${key}">${ic('cooking-pot','sm')}Kuvaj korak po korak</button>
     ${isToday?(e?`<button class="btn ghost block" data-eat="${slot}" data-fr="0" data-from-sheet="1">Poništi unos</button>`:`<div class="row"><button class="btn" style="flex:1" data-eat="${slot}" data-fr="1" data-from-sheet="1">${ic('check','sm')}Pojeo sam</button><button class="btn ghost" data-eat="${slot}" data-fr="0.5" data-from-sheet="1">Pola</button></div>`):''}
     <button class="btn ghost block" data-swap="${slot}" data-key="${key}" data-from-sheet="1">${ic('arrows-clockwise','sm')}Zameni drugim jelom</button>
   </div>`}
@@ -439,6 +442,7 @@ function shopSheet(){
   const groups={};Object.keys(agg).forEach(k=>{(groups[N[k][3]]=groups[N[k][3]]||[]).push(k)});const keys=Object.keys(agg);
   return `<div class="sheet-head"><div><div class="w">Ova nedelja${S.p.partner==='da'?' · za tebe i partnera':''}</div><h2 id="sheetTitle">Spisak za kupovinu</h2></div>${closeBtn}</div>
   <p class="small muted" style="margin-bottom:14px"><span class="n" id="shopCount">${keys.filter(k=>done[k]).length}/${keys.length}</span> kupljeno. Količine su zaokružene naviše.</p>
+  <div class="share-row"><button class="btn sm" data-share="shop">${ic('share-network','sm')}Podeli spisak</button></div>
   ${['meso','mlecno','povrce','voce','ostalo'].filter(c=>groups[c]).map(c=>`<div class="shop-group"><div class="block-lbl">${CAT_NAMES[c]}</div>${groups[c].sort((a,b)=>N[a][0].localeCompare(N[b][0],'sr')).map(k=>`<label class="shop-item ${done[k]?'done':''}"><input type="checkbox" data-shop="${k}" ${done[k]?'checked':''}><span>${esc(N[k][0])}</span><b>${qty(k,agg[k])}</b></label>`).join('')}</div>`).join('')}`}
 function handsSheet(){return `<div class="sheet-head"><div><div class="w">Bez kuhinjske vage</div><h2 id="sheetTitle">Tvoja šaka je merica</h2></div>${closeBtn}</div>
   <div class="hands"><div class="hand"><b>Dlan</b><span>Meso ili riba veličine i debljine dlana, oko 100 g.</span></div><div class="hand"><b>Šolja</b><span>250 ml, kao šolja za čaj. Kuvan pirinač, sočivo, heljda.</span></div>
@@ -483,7 +487,7 @@ function handle(e){
   if(ds.swap!==undefined){const nx=swapMeal(ds.key,+ds.swap);toast('Novo jelo: '+nx.n);if(ds.fromSheet){sheetBody.innerHTML=mealSheet(ds.key,+ds.swap)}rerender();return}
   if(ds.trk){const d=dayOf();d[ds.trk]=Math.max(0,(d[ds.trk]||0)+ +ds.v);save();rerender();return}
   if(ds.sleep){const d=dayOf();d.sleep=clamp((d.sleep!=null?d.sleep:S.p.sleep)+ +ds.sleep,3,12);save();rerender();return}
-  if(ds.energy){const d=dayOf();d.energy=+ds.energy;if(d.sleep==null)d.sleep=S.p.sleep;save();toast('San i energija upisani');rerender();return}
+  if(ds.energy){const d=dayOf();d.energy=+ds.energy;if(d.sleep==null)d.sleep=S.p.sleep;save();rerender();return}
   if(ds.ex){const d=dayOf();d.ex=!d.ex;save();if(d.ex)toast('Trening upisan');rerender();return}
   if(ds.day){VIEWDAY=ds.day;rerender();return}
   if(ds.delx!==undefined){dayOf().extra.splice(+ds.delx,1);save();rerender();return}
@@ -507,7 +511,7 @@ function handle(e){
     case 'notifT':{const want=t.checked;t.disabled=true;setReminders(want).then(ok=>{S.notif=ok?want:false;t.checked=S.notif;t.disabled=false;save();if(ok&&want)toast('Podsetnici su uključeni')});return}
     case 'bkCopy':{const txt=JSON.stringify(S);(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('Kopirano. Sačuvaj u beleškama.')).catch(()=>openSheet(backupSheet(txt)));return}
     case 'bkRestore':openSheet(backupSheet(''));return;
-    case 'bkGo':try{const o=JSON.parse(document.getElementById('bkTxt').value);if(!o||typeof o!=='object'||!o.days)throw 0;S=Object.assign({},DEF,o);S.p=Object.assign({},DEFP,o.p||{});save();closeSheet();toast('Podaci su vraćeni');rerender()}catch(err){document.getElementById('bkErr').hidden=false}return;
+    case 'bkGo':try{restoreFromText(document.getElementById('bkTxt').value);closeSheet()}catch(err){document.getElementById('bkErr').hidden=false}return;
     case 'resetBtn':document.getElementById('resetConfirm').hidden=false;return;
     case 'resetNo':document.getElementById('resetConfirm').hidden=true;return;
     case 'resetYes':S.start=TODAY;S.adj=0;S.lastReview=null;save();toast('Plan kreće od danas');rerender();return;
@@ -548,8 +552,4 @@ async function scheduleReminders(on=true){const LN=PL('LocalNotifications');if(!
   A.addListener('backButton',()=>{if(!sheet.hidden)closeSheet();else if(TAB==='wizard'){if(WIZ>0){WIZ--;rerender()}else A.exitApp()}else if(TAB==='profil')go(prevTab);else if(TAB!=='danas')go('danas');else A.exitApp()});
   A.addListener('appStateChange',st=>{if(st.isActive&&iso(new Date())!==TODAY){TODAY=iso(new Date());VIEWDAY=TODAY;runReview(false);rerender();if(S.notif)scheduleReminders()}})})();
 
-/* ================= START ================= */
-applyTheme();
-if(!S.setup){WIZ=0;TAB='wizard'}
-render();
-if(S.setup){runReview(false);if(S.notif)scheduleReminders()}
+/* START je u v4.js */

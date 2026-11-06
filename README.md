@@ -11,6 +11,10 @@ Lični plan ishrane i praćenje, kao Android aplikacija.
 - Pitanja na koja savetnik ne zna odgovor beleže se u profilu, da bi se baza dopunjavala
 - Spisak za kupovinu, podsetnici, rezervna kopija
 
+- Prikazi: trend kilaže bez skokova vode sa očekivanim napretkom, kalendar doslednosti i niz dobrih dana, uvidi iz dnevnika, kalorije i makroi po danu, prekretnice, nedeljni izveštaj
+- UX: poništavanje u poruci, prevlačenje obroka (udesno upis, ulevo zamena), režim kuvanja sa tajmerom, omiljena jela i jela koja se ne nude, jutarnji check-in, deljenje spiska, vibracija
+- Svetla i tamna tema, prilagođavanje uvećanom sistemskom fontu, zaštita od duplog dodira
+
 ## Kako dobiti APK
 
 Svaki push na `main` pokreće GitHub Actions (`.github/workflows/android.yml`), koji napravi APK i objavi ga u **Releases**.
@@ -19,9 +23,14 @@ Svaki push na `main` pokreće GitHub Actions (`.github/workflows/android.yml`), 
 2. Na telefonu otvori fajl i dozvoli instalaciju iz tog izvora kad Android pita.
 3. Nova verzija se instalira preko stare i podaci ostaju, jer je ključ za potpis stalan (`keystore/debug.keystore`).
 
+## Google Play (AAB)
+
+Workflow pravi i `meni-po-meri.aab` kad u repou postoje tajne (Settings → Secrets and variables → Actions):
+`UPLOAD_KEYSTORE_BASE64`, `UPLOAD_STORE_PASSWORD`, `UPLOAD_KEY_ALIAS`, `UPLOAD_KEY_PASSWORD`. Ključ za potpis se nikad ne stavlja u repo.
+
 ## Izmene
 
-Cela aplikacija je u `www/index.html`. Jelovnik i namirnice su na vrhu skripte (`MENU`, `F`, `N`).
+Aplikacija je u `www/`: `data.js` (namirnice, obroci), `kb.js` (savetnik), `app.js` (logika i ekrani), `v4.js` (prikazi, UX, start).
 
 Lokalno, uz instaliran Android Studio:
 
@@ -33,4 +42,4 @@ npx cap open android
 
 ## Podaci
 
-Svi upisi se čuvaju samo na telefonu. Pre brisanja aplikacije ili promene telefona: Napredak → Podešavanja → Kopiraj podatke.
+Upisi se čuvaju na telefonu (i u Android rezervnoj kopiji). Za prelazak na drugi telefon: Profil → Podešavanja → Sačuvaj u fajl, pa Učitaj iz fajla.
