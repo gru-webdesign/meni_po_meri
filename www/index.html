@@ -29,7 +29,7 @@
   --bg:#F3F6F2; --surface:#FCFDFB; --sunk:#EBF0EA; --ink:#121613; --muted:#59665D; --line:#DCE4DD;
   --accent:#12803E; --on-accent:#FFFFFF; --accent-soft:#DDF1E3; --accent-ink:#0B5A2B;
   --red:#C9243A; --red-soft:#FBE4E7;
-  --night:#131915; --night-2:#1F2822; --night-ink:#EEF4EF; --night-muted:#9EAEA3; --ring-track:#2B362F;
+  --night:#FFFFFF; --night-2:#EEF3EE; --night-ink:#121613; --night-muted:#59665D; --ring-track:#E3EBE4;
   --font:"Geist", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --r-card:20px; --r-input:12px;
@@ -446,6 +446,10 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
 .note{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:13px;color:var(--muted);align-items:start}
 .toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 .misslist{display:grid;gap:6px;margin-top:10px}.misslist div{background:var(--sunk);border-radius:12px;padding:8px 12px;font-size:14px}
+.hero{box-shadow:var(--shadow)}
+.toast{box-shadow:0 6px 24px rgba(0,0,0,.18);border:1px solid var(--line)}
+.avatar{border:1px solid var(--line)}
+.theme-seg{margin-top:4px}
 @media (max-width:400px){.nums b{font-size:16px}.quick{grid-template-columns:1fr}.seg button{font-size:13px;padding:9px 4px}}
 </style>
 </head>

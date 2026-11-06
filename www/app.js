@@ -18,11 +18,11 @@ const isNative=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Ca
 const PL=n=>(window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins[n])||null;
 
 /* ================= STANJE ================= */
-const DEFP={name:'',sex:'m',age:35,height:174,weight:112,goalW:80,pace:'brzi',job:'sed',move:'none',trainDays:[0,2,4],bf:'08:00',
-  back:true,stomach:true,chol:true,bp:false,sugar:false,gluten:true,lactose:false,physioOk:false,tired:true,healthNote:'',
-  mealsN:5,noFish:false,noPork:false,veg:false,noNuts:false,dislikes:'',budget:'srednji',partner:'da',partnerPct:0.75,
-  waterNow:'low',soda:1,coffee:4,sleep:8,alcohol:'retko'};
-const DEF={v:4,setup:false,start:null,p:DEFP,days:{},weights:[],waist:[],adj:0,reviews:[],lastReview:null,ovr:{},chat:[],miss:[],shop:{},health:{},notif:false,grams:false,updated:0};
+const DEFP={name:'',sex:'',age:'',height:'',weight:'',goalW:'',pace:'umeren',job:'sed',move:'none',trainDays:[0,2,4],bf:'08:00',
+  back:false,stomach:false,chol:false,bp:false,sugar:false,gluten:false,lactose:false,physioOk:false,tired:false,healthNote:'',
+  mealsN:5,noFish:false,noPork:false,veg:false,noNuts:false,dislikes:'',budget:'srednji',partner:'ne',partnerPct:0.75,
+  waterNow:'mid',soda:0,coffee:2,sleep:7.5,alcohol:'retko'};
+const DEF={v:4,setup:false,start:null,p:DEFP,days:{},weights:[],waist:[],adj:0,reviews:[],lastReview:null,ovr:{},chat:[],miss:[],shop:{},health:{},notif:false,theme:'auto',grams:false,updated:0};
 const LS='meniPoMeri.v2';
 let S=JSON.parse(JSON.stringify(DEF));
 try{
@@ -174,7 +174,7 @@ function viewDanas(){
     <button class="nc-name" data-meal-open="${next.slot}" data-key="${TODAY}">${esc(next.meal.n)}${ic('caret-right','sm')}</button>
     <div class="row"><button class="btn sm" data-eat="${next.slot}" data-fr="1">${ic('check','sm')}Pojeo sam</button><button class="btn ghost sm" data-eat="${next.slot}" data-fr="0.5">Pola</button><button class="btn ghost sm" data-swap="${next.slot}" data-key="${TODAY}">${ic('arrows-clockwise','sm')}Zameni</button></div></section>`
   :`<div class="tip">${ic('check-circle')}<div><b>Svi obroci za danas su pojedeni</b><span>Još samo voda i kretanje.</span></div></div>`}
-  <section class="tiles" aria-label="Brzo beleženje">
+  <section class="tiles" aria-label="Brzo beleženje" style="grid-template-columns:repeat(${sp?3:2},1fr)">
     ${tile('Voda','drop','drop-ic',litres(d.water),litres(wg)+' l',d.water/wg,'water',250,'+ čaša','')}
     ${sp?tile('Gazirano','beer-bottle','cola-ic',d.soda,(sp.max||0)+' ml',sp.max?d.soda/sp.max:(d.soda?1:0),'soda',330,'+ 0,33','cola '+(d.soda>sp.max?'over':'')):''}
     ${tile('Hod','footprints','walk-ic',d.walk,wt+' min',d.walk/wt,'walk',10,'+10 min','')}
@@ -307,11 +307,11 @@ function chartSVG(){
 const FORM=[
  {sec:'Osnovno',sub:'Iz ovoga se računa koliko energije trošiš.',f:[
    {id:'name',l:'Ime',t:'text',ph:'Kako da te zovem'},
-   {id:'sex',l:'Pol',t:'seg',o:[['m','Muški'],['z','Ženski']]},
-   {id:'age',l:'Godine',t:'num',min:16,max:90},{id:'height',l:'Visina (cm)',t:'num',min:130,max:220},
-   {id:'weight',l:'Težina na početku (kg)',t:'num',min:40,max:250,step:0.1}]},
+   {id:'sex',l:'Pol',t:'seg',o:[['m','Muški'],['z','Ženski']],req:1},
+   {id:'age',l:'Godine',t:'num',min:16,max:90,ph:'npr. 35',req:1},{id:'height',l:'Visina (cm)',t:'num',min:130,max:220,ph:'npr. 178',req:1},
+   {id:'weight',l:'Trenutna težina (kg)',t:'num',min:40,max:250,step:0.1,ph:'npr. 92,5',req:1}]},
  {sec:'Cilj',sub:'Tempo određuje veličinu deficita. Brže od 1 kg nedeljno ne ide.',f:[
-   {id:'goalW',l:'Ciljna težina (kg)',t:'num',min:40,max:200,step:0.5},
+   {id:'goalW',l:'Ciljna težina (kg)',t:'num',min:40,max:200,step:0.5,ph:'npr. 80',req:1},
    {id:'pace',l:'Tempo',t:'seg',o:[['umeren','Umereno'],['brzi','Brže']],help:'Umereno je 0,5% telesne težine nedeljno, brže 0,75%.'}]},
  {sec:'Aktivnost',sub:'Posao i kretanje menjaju potrošnju i plan hodanja.',f:[
    {id:'job',l:'Posao',t:'seg',o:[['sed','Sedeći'],['stand','Stojeći'],['phys','Fizički']]},
@@ -327,7 +327,7 @@ const FORM=[
    {id:'_d',l:'Ne jedem',t:'chips',o:[['noFish','Ribu'],['noPork','Svinjetinu'],['veg','Meso uopšte'],['noNuts','Orašaste plodove']]},
    {id:'dislikes',l:'Ne volim (savetnik pamti)',t:'text',ph:'npr. pečurke, tikvice'},
    {id:'partner',l:'Kuvaš i za još nekog',t:'seg',o:[['ne','Samo za sebe'],['da','I za partnera']]},
-   {id:'partnerPct',l:'Partnerova porcija',t:'select',o:[['0.6','60% moje'],['0.75','75% moje'],['0.9','90% moje'],['1','Ista kao moja']],show:()=>S.p.partner==='da'}]},
+   {id:'partnerPct',l:'Partnerova porcija',t:'select',o:[['0.6','60% moje'],['0.75','75% moje'],['0.9','90% moje'],['1','Ista kao moja'],['1.15','115%, veća od moje'],['1.25','125%, veća od moje'],['1.4','140%, veća od moje']],help:'Ako partner ima veće potrebe (npr. muškarac uz ženski profil), izaberi više od 100%.',show:()=>S.p.partner==='da'}]},
  {sec:'Navike',sub:'Odavde kreće plan za vodu, gazirano i san.',f:[
    {id:'waterNow',l:'Vode piješ sada',t:'seg',o:[['low','Manje od 1 l'],['mid','1 do 2 l'],['ok','Više od 2 l']]},
    {id:'soda',l:'Gaziranih sokova dnevno (litara)',t:'num',min:0,max:5,step:0.1},
@@ -339,9 +339,9 @@ function fieldHTML(f){
   if(f.show&&!f.show())return '';
   const v=S.p[f.id];
   if(f.t==='text')return `<label class="fld" for="f_${f.id}"><span>${f.l}</span><input type="text" id="f_${f.id}" data-pf="${f.id}" value="${esc(v)}" placeholder="${esc(f.ph||'')}"></label>`;
-  if(f.t==='num')return `<label class="fld" for="f_${f.id}"><span>${f.l}</span><input type="number" inputmode="decimal" id="f_${f.id}" data-pf="${f.id}" data-num="1" value="${v==null?'':v}" min="${f.min}" max="${f.max}" step="${f.step||1}"></label>`;
-  if(f.t==='select')return `<label class="fld" for="f_${f.id}"><span>${f.l}</span><select id="f_${f.id}" data-pf="${f.id}">${f.o.map(o=>`<option value="${o[0]}" ${String(v)===String(o[0])?'selected':''}>${o[1]}</option>`).join('')}</select></label>`;
-  if(f.t==='seg')return `<div class="fld"><span>${f.l}</span><div class="seg" role="radiogroup" aria-label="${esc(f.l)}">${f.o.map(o=>`<button type="button" role="radio" aria-checked="${String(v)===o[0]}" class="${String(v)===o[0]?'on':''}" data-seg="${f.id}" data-v="${o[0]}">${o[1]}</button>`).join('')}</div>${f.help?`<small class="muted">${f.help}</small>`:''}</div>`;
+  if(f.t==='num')return `<label class="fld" for="f_${f.id}"><span>${f.l}${f.req?' *':''}</span><input type="number" inputmode="decimal" id="f_${f.id}" data-pf="${f.id}" data-num="1" value="${v==null?'':v}" min="${f.min}" max="${f.max}" step="${f.step||1}" placeholder="${esc(f.ph||'')}"></label>`;
+  if(f.t==='select')return `<label class="fld" for="f_${f.id}"><span>${f.l}</span><select id="f_${f.id}" data-pf="${f.id}">${f.o.map(o=>`<option value="${o[0]}" ${String(v)===String(o[0])?'selected':''}>${o[1]}</option>`).join('')}</select>${f.help?`<small class="muted">${f.help}</small>`:''}</label>`;
+  if(f.t==='seg')return `<div class="fld"><span>${f.l}${f.req?' *':''}</span><div class="seg" role="radiogroup" aria-label="${esc(f.l)}">${f.o.map(o=>`<button type="button" role="radio" aria-checked="${String(v)===o[0]}" class="${String(v)===o[0]?'on':''}" data-seg="${f.id}" data-v="${o[0]}">${o[1]}</button>`).join('')}</div>${f.help?`<small class="muted">${f.help}</small>`:''}</div>`;
   if(f.t==='chips')return `<div class="fld"><span>${f.l}</span><div class="chips">${f.o.map(o=>`<button type="button" aria-pressed="${!!S.p[o[0]]}" class="chip-t ${S.p[o[0]]?'on':''}" data-flag="${o[0]}">${S.p[o[0]]?ic('check','sm'):''}${o[1]}</button>`).join('')}</div></div>`;
   if(f.t==='days')return `<div class="fld"><span>${f.l}</span><div class="chips days7">${DAYS.map((d,i)=>`<button type="button" aria-pressed="${(v||[]).includes(i)}" class="chip-t ${(v||[]).includes(i)?'on':''}" data-dayi="${i}">${d}</button>`).join('')}</div></div>`;
   if(f.t==='check')return `<label class="toggle" for="f_${f.id}">${f.l}<input type="checkbox" class="switch" id="f_${f.id}" data-pf="${f.id}" data-bool="1" ${v?'checked':''}></label>`;
@@ -361,6 +361,7 @@ function viewProfil(){
     ${(S.miss||[]).length?`<div class="misslist">${S.miss.slice(-8).reverse().map(m=>`<div>${esc(m.q)}</div>`).join('')}</div><div class="row" style="flex-wrap:wrap;margin-top:12px"><button class="btn ghost sm" id="missCopy">${ic('copy','sm')}Kopiraj pitanja</button><button class="btn ghost sm" id="missClear">${ic('trash','sm')}Obriši listu</button></div>`:''}
   </section>
   <section class="card"><h2 style="margin-bottom:12px">Podešavanja</h2>
+    <div class="fld" style="margin-bottom:12px"><span>Izgled</span><div class="seg theme-seg" role="radiogroup" aria-label="Izgled">${[['light','Svetla'],['dark','Tamna'],['auto','Kao telefon']].map(o=>`<button type="button" role="radio" aria-checked="${(S.theme||'auto')===o[0]}" class="${(S.theme||'auto')===o[0]?'on':''}" data-theme="${o[0]}">${o[1]}</button>`).join('')}</div></div>
     <label class="toggle" for="notifT">Podsetnici za obroke, vodu i šetnju<input type="checkbox" class="switch" id="notifT" ${S.notif?'checked':''}></label>
     <label class="toggle" for="gramsT">Prikaži grame pored domaćih mera<input type="checkbox" class="switch" id="gramsT" ${S.grams?'checked':''}></label>
     <div style="display:grid;gap:8px;margin-top:12px"><div class="block-lbl" style="margin:0">Rezervna kopija</div><p class="small muted">Podaci su samo na ovom telefonu. Pre brisanja aplikacije ili promene telefona kopiraj ih i sačuvaj u beleškama.</p>
@@ -379,6 +380,7 @@ function viewWizard(){
   return `<div class="wiz"><div class="wiz-prog"><i style="width:${(WIZ)/n*100}%"></i></div>
    <div class="small muted">Korak ${WIZ+1} od ${n}</div><h1 class="wiz-h">${s.sec}</h1><p class="muted" style="margin-bottom:16px">${s.sub}</p>
    <div class="fields">${s.f.map(fieldHTML).join('')}</div>
+   <div id="wizErr" class="err" hidden style="margin-top:14px"></div>
    <div class="wiz-nav">${WIZ>0?`<button class="btn ghost" data-wiz="-1">${ic('caret-left','sm')}Nazad</button>`:'<span></span>'}<button class="btn" data-wiz="1">Dalje${ic('caret-right','sm')}</button></div></div>`;
 }
 
@@ -463,6 +465,14 @@ document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.cl
 
 function profileChanged(full){save();if(S.notif)scheduleReminders();if(full)rerender()}
 
+function syncInputs(){app.querySelectorAll('[data-pf]').forEach(el=>{if(el.dataset.bool)return;let v=el.value;if(el.dataset.num){if(v==='')return;v=parseFloat(String(v).replace(',','.'));if(isNaN(v))return}if(el.dataset.pf==='partnerPct')v=+v;S.p[el.dataset.pf]=v})}
+function validateStep(i){const p=S.p,sec=FORM[i].sec;
+  if(sec==='Osnovno'){if(!p.sex)return 'Izaberi pol, potreban je za tačan obračun potrošnje.';if(!(p.age>=16&&p.age<=90))return 'Upiši godine (16 do 90).';if(!(p.height>=130&&p.height<=220))return 'Upiši visinu u centimetrima (130 do 220).';if(!(p.weight>=40&&p.weight<=250))return 'Upiši trenutnu težinu u kilogramima.';}
+  if(sec==='Cilj'){if(!(p.goalW>=40&&p.goalW<=200))return 'Upiši ciljnu težinu u kilogramima.';const h=p.height/100;if(p.goalW<18.5*h*h)return 'Ciljna težina je ispod zdravog opsega za tvoju visinu (najmanje '+Math.ceil(18.5*h*h)+' kg). Izaberi veću vrednost.';}
+  return null}
+function applyTheme(){const r=document.documentElement;if(S.theme==='light'||S.theme==='dark')r.setAttribute('data-theme',S.theme);else r.removeAttribute('data-theme');
+  const dark=S.theme==='dark'||(S.theme!=='light'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
+  document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.setAttribute('content',dark?'#0B0F0C':'#F3F6F2'));}
 /* ================= DOGAĐAJI ================= */
 function handle(e){
   const t=e.target.closest('button,input[type=checkbox],[data-close]');if(!t)return;const ds=t.dataset;
@@ -486,7 +496,8 @@ function handle(e){
   if(ds.seg){const v=ds.v;S.p[ds.seg]=(ds.seg==='mealsN')?+v:v;t.parentElement.querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b===t);b.setAttribute('aria-checked',b===t)});profileChanged(TAB==='profil'||ds.seg==='partner');if(TAB==='wizard'&&ds.seg==='partner')rerender();return}
   if(ds.flag){S.p[ds.flag]=!S.p[ds.flag];profileChanged(true);return}
   if(ds.dayi!==undefined){const i=+ds.dayi,a=S.p.trainDays||[];S.p.trainDays=a.includes(i)?a.filter(x=>x!==i):a.concat(i).sort();profileChanged(true);return}
-  if(ds.wiz){WIZ=clamp(WIZ+ +ds.wiz,0,FORM.length);rerender();window.scrollTo({top:0});return}
+  if(ds.wiz){syncInputs();if(+ds.wiz>0&&WIZ<FORM.length){const er=validateStep(WIZ);if(er){const b=document.getElementById('wizErr');b.textContent=er;b.hidden=false;return}}WIZ=clamp(WIZ+ +ds.wiz,0,FORM.length);rerender();window.scrollTo({top:0});return}
+  if(ds.theme){S.theme=ds.theme;applyTheme();save();rerender();return}
   if(ds.sug){ask(ds.sug);return}
   if(ds.act){runAct(ds.act);return}
   if(t.dataset.bool){S.p[t.dataset.pf]=t.checked;profileChanged(true);return}
@@ -538,6 +549,7 @@ async function scheduleReminders(on=true){const LN=PL('LocalNotifications');if(!
   A.addListener('appStateChange',st=>{if(st.isActive&&iso(new Date())!==TODAY){TODAY=iso(new Date());VIEWDAY=TODAY;runReview(false);rerender();if(S.notif)scheduleReminders()}})})();
 
 /* ================= START ================= */
+applyTheme();
 if(!S.setup){WIZ=0;TAB='wizard'}
 render();
 if(S.setup){runReview(false);if(S.notif)scheduleReminders()}
