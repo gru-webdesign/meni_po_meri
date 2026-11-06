@@ -2,11 +2,13 @@
 
 Lični plan ishrane i praćenje, kao Android aplikacija.
 
-- Jelovnik za 7 dana u domaćim merama (šaka, dlan, kašika, šolja), sa kalorijama i makroima za svaki obrok
-- Praćenje obroka, vode, Coca-Cole i hodanja
-- Kretanje prilagođeno diskus herniji
-- Grafikon kilaže, spisak za kupovinu, podsetnici
-- „Pitaj Claude” otvara Claude aplikaciju sa celim kontekstom plana
+- Profil korisnika (čarobnjak pri prvom pokretanju) iz kog se računa sve: kalorije, makroi, voda, hod, trening
+- Adaptivni jelovnik: biblioteka od 45 obroka sa oznakama (gluten, laktoza, riba, meso...), nedeljna rotacija, porcije skalirane na dnevni cilj, zamena jela jednim dodirom
+- Nedeljna provera tempa: ako kilaža stoji uz doslednost, -100 kcal; ako ide prebrzo, +100 kcal; usporavanje na zadnjih 5 kg i prelaz na održavanje
+- Tracker: obroci (ceo ili pola), hrana van plana, voda, gazirano, hod, trening, san i energija, kilaža, obim struka, kalorije za 7 dana
+- Trening iz profila: hod koji raste po nedeljama, vežbe za leđa ili snagu po izabranim danima
+- Savetnik bez interneta: baza znanja o ishrani, treningu, kičmi, imunitetu i snu, plus odgovori iz tvog plana i dnevnika
+- Spisak za kupovinu, podsetnici, rezervna kopija
 
 ## Kako dobiti APK
 
