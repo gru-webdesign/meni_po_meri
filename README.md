@@ -15,6 +15,9 @@ Lični plan ishrane i praćenje, kao Android aplikacija.
 - UX: poništavanje u poruci, prevlačenje obroka (udesno upis, ulevo zamena), režim kuvanja sa tajmerom, omiljena jela i jela koja se ne nude, jutarnji check-in, deljenje spiska, vibracija
 - Svetla i tamna tema, prilagođavanje uvećanom sistemskom fontu, zaštita od duplog dodira
 
+- Igra: biljka koja raste kroz 10 nivoa, listići za svaku dobru naviku, 3 dnevna izazova, pitanje dana, štit koji čuva niz, kolekcija probanih jela, konfete i večernji podsetnik za niz
+- Sekcije: Napredak (Kilaža, Navike, Ishrana, Nagrade), Jelovnik (Plan, Kuvar sa filterima i pretragom), Trening (Danas, Nedelja, Saveti), Profil u tabovima
+
 ## Kako dobiti APK
 
 Svaki push na `main` pokreće GitHub Actions (`.github/workflows/android.yml`), koji napravi APK i objavi ga u **Releases**.
@@ -30,7 +33,7 @@ Workflow pravi i `meni-po-meri.aab` kad u repou postoje tajne (Settings → Secr
 
 ## Izmene
 
-Aplikacija je u `www/`: `data.js` (namirnice, obroci), `kb.js` (savetnik), `app.js` (logika i ekrani), `v4.js` (prikazi, UX, start).
+Aplikacija je u `www/`: `data.js` (namirnice, obroci), `kb.js` (savetnik), `app.js` (logika i ekrani), `v4.js` (prikazi, UX), `v5.js` (igra, sekcije, Danas, start).
 
 Lokalno, uz instaliran Android Studio:
 

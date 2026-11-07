@@ -246,17 +246,4 @@ function applyTheme(){const r=document.documentElement;if(S.theme==='light'||S.t
   try{const SB=PL('SystemBars');if(SB)SB.setStyle({style:dark?'DARK':'LIGHT'}).catch(()=>{})}catch(e){}}
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(!S.theme||S.theme==='auto')applyTheme()})}catch(e){}
 
-/* ================= START ================= */
-function detectBigText(){try{const sp=document.createElement('span');sp.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:16px Arial,sans-serif';sp.textContent='MMMMMMMMMM';document.body.appendChild(sp);
-  const cv=document.createElement('canvas').getContext('2d');cv.font='16px Arial,sans-serif';const ratio=sp.getBoundingClientRect().width/cv.measureText('MMMMMMMMMM').width;sp.remove();
-  document.body.classList.toggle('bigtext',ratio>1.12||innerWidth<340)}catch(e){}}
-window.addEventListener('resize',detectBigText);
-(async function boot(){
-  try{const P=PL('Preferences');if(P){const has=localStorage.getItem(LS);const r=await P.get({key:LS});
-    if(r&&r.value){const o=JSON.parse(r.value);if(!has||(o.updated||0)>(S.updated||0)){S=Object.assign({},DEF,o);S.p=Object.assign({},DEFP,o.p||{});S.fav=S.fav||{};S.dis=S.dis||{};S.ms=S.ms||{};try{localStorage.setItem(LS,r.value)}catch(e){}}}
-    else if(has){P.set({key:LS,value:has}).catch(()=>{})}}}catch(e){}
-  applyTheme();detectBigText();
-  if(!S.setup){WIZ=0;TAB='wizard'}
-  render();
-  if(S.setup){runReview(false);if(S.notif)scheduleReminders();checkMilestones();autoBackup()}
-})();
+/* START je u v5.js */
