@@ -222,7 +222,7 @@ function viewJelovnik(){
       <button class="icon-btn" data-swap="${x.slot}" data-key="${VIEWDAY}" aria-label="Zameni ${esc(x.meal.n)}">${ic('arrows-clockwise','sm')}</button></div>`).join('')}</div>
   </section>
   <div class="act-row">
-    <button class="act-card" data-sheet="shop"><span class="bubble">${ic('shopping-cart')}</span><span><b>Kupovina</b><span>za ovu nedelju</span></span></button>
+    <button class="act-card" data-sheet="shop"><span class="bubble">${ic('shopping-cart')}</span><span><b>Kupovina</b><span>po danima</span></span></button>
     <button class="act-card" data-sheet="hands"><span class="bubble">${ic('hand-palm')}</span><span><b>Mere bez vage</b><span>šaka, dlan, kašika</span></span></button>
   </div>
   <div class="note">${ic('info','sm')}<span>Porcije se same prilagođavaju tvom dnevnom cilju. Jelovnik se menja svake nedelje i poštuje ono što si isključio u profilu${exclTags().length?': '+exclTags().map(t=>({gluten:'bez glutena',laktoza:'bez laktoze',riba:'bez ribe',svinja:'bez svinjetine',meso:'bez mesa',orasasto:'bez orašastih'}[t])).join(', '):''}.</span></div>`;

@@ -9,7 +9,8 @@ Lični plan ishrane i praćenje, kao Android aplikacija.
 - Trening iz profila: hod koji raste po nedeljama, vežbe za leđa ili snagu po izabranim danima
 - Savetnik bez interneta: 75 tema, kalorije za 209 jela i pića, razume padeže, greške u kucanju i nastavak razgovora; odgovara iz tvog plana i dnevnika (šta je za koji obrok, zamene, preostale kalorije, nedeljni pregled, šta da napravim od onoga što imam)
 - Pitanja na koja savetnik ne zna odgovor beleže se u profilu, da bi se baza dopunjavala
-- Spisak za kupovinu, podsetnici, rezervna kopija
+- Spisak za kupovinu po danima (danas, sutra, 3 dana, do nedelje, cela ili sledeća nedelja, izabrani dani): korpa, izbacivanje onoga što imaš, „uvek imam kod kuće”, svoje stavke, količine za jednog ili dvoje, deljenje
+- Podsetnici, rezervna kopija
 
 - Prikazi: trend kilaže bez skokova vode sa očekivanim napretkom, kalendar doslednosti i niz dobrih dana, uvidi iz dnevnika, kalorije i makroi po danu, prekretnice, nedeljni izveštaj
 - UX: poništavanje u poruci, prevlačenje obroka (udesno upis, ulevo zamena), režim kuvanja sa tajmerom, omiljena jela i jela koja se ne nude, jutarnji check-in, deljenje spiska, vibracija

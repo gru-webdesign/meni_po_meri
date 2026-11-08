@@ -251,7 +251,7 @@ function planView(){const wk0=addDays(TODAY,-dIdx(TODAY)),days=[...Array(7)].map
   <section class="card"><div class="sec-title"><h2>${DAYN[dIdx(VIEWDAY)]}${VIEWDAY===TODAY?' <span class="pill soft" style="margin-left:6px;vertical-align:middle">danas</span>':''}</h2><span class="pill line n">${fmtK(tot[0])} kcal</span></div>
     <div class="tl">${pl.map(x=>`<div class="mrow">${av(x.meal,x.type)}<button class="open" data-meal-open="${x.slot}" data-key="${VIEWDAY}"><span class="w">${TYPE_NAMES[x.type]} · ${x.time}${!S.tried[x.meal.id]?'<span class="newtag">novo</span>':''}</span><span class="nm">${esc(x.meal.n)}</span><span class="kc">${R(x.meal.nt[0])} kcal · P ${R(x.meal.nt[1])} · UH ${R(x.meal.nt[2])} · M ${R(x.meal.nt[3])}</span></button>
       <button class="icon-btn" data-swap="${x.slot}" data-key="${VIEWDAY}" aria-label="Zameni ${esc(x.meal.n)}">${ic('arrows-clockwise','sm')}</button></div>`).join('')}</div></section>
-  <div class="act-row"><button class="act-card" data-sheet="shop"><span class="bubble">${icd('gift')}</span><span><b>Kupovina</b><span>za ovu nedelju</span></span></button>
+  <div class="act-row"><button class="act-card" data-sheet="shop"><span class="bubble">${icd('gift')}</span><span><b>Kupovina</b><span>po danima</span></span></button>
     <button class="act-card" data-sheet="hands"><span class="bubble">${icd('heart')}</span><span><b>Mere bez vage</b><span>šaka, dlan, kašika</span></span></button></div>`}
 const KF=[['sve','Sve'],['d','Doručak'],['s','Užina'],['l','Ručak'],['v','Večera'],['fav','Omiljena'],['new','Neprobana']];
 function kuvarView(){const f=uiGet('kf','sve'),P=cookbookPool(),n=P.filter(m=>S.tried[m.id]).length;
