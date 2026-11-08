@@ -58,7 +58,7 @@ function sodaPlan(){const base=R((+S.p.soda||0)*1000);if(base<=0)return null;con
   if(w===2)return {max:500,t:'Samo Zero, najviše 0,5 l',tip:'Obični gazirani sok više ne kupuj. Čaša vode pre svakog gaziranog.'};
   if(w===3)return {max:330,t:'Zero najviše 1 limenka',tip:'Samo uz ručak. Kofein posle 15h kvari san.'};
   return {max:0,t:'Gazirano samo vikendom',tip:'Jedna limenka Zero vikendom. Voda je osnovno piće.'}}
-const walkT=()=>{const b={none:30,some:40,reg:50}[S.p.move]||30;return Math.min(b+30,b+5*(weekNo()-1))};
+function walkT(w){w=w||weekNo();const b={none:30,some:40,reg:50}[S.p.move]||30;if(S.p.pace==='int')return Math.min(b+45,b+15+5*(w-1));if(S.p.pace==='brzi')return Math.min(b+35,b+5+5*(w-1));return Math.min(b+30,b+5*(w-1))}
 function etaDate(){const r=rateKg();if(r<=0)return null;let w=curW(),weeks=0;while(w>S.p.goalW+0.3&&weeks<200){let rr=w*(S.p.pace==='brzi'?0.0075:0.005);rr=Math.min(rr,1);if(w-S.p.goalW<5)rr*=0.6;w-=rr;weeks++}return new Date(Date.now()+weeks*7*864e5)}
 
 /* ================= JELOVNIK ================= */
@@ -94,7 +94,7 @@ function swapMeal(key,slot){const pl=planFor(key)[slot];const P=pool(pl.type);co
 const QF=q=>{const w=Math.floor(q),fr=q-w;const f=fr>=0.74?'¾':fr>=0.49?'½':fr>=0.24?'¼':'';return (w?w:'')+(f||(w?'':'0'))};
 function unitStr(u,q){const f=UNITS[u]||[u,u,u];if(q===1)return f[0];if(q<1||q%1!==0)return f[1];if(q>=2&&q<=4)return f[1];return f[2]}
 const measure=it=>QF(it.q)+' '+unitStr(it.u,it.q);
-const shortName=k=>N[k][0].split(',')[0].split('(')[0].replace(' bez glutena','').replace(' bez pšenice','').trim();
+const shortName=k=>N[k][0].split(', ')[0].split('(')[0].replace(' bez glutena','').replace(' bez pšenice','').trim();
 
 /* ================= DNEVNIK ================= */
 function dayTotals(key=TODAY){const d=S.days[key];if(!d)return [0,0,0,0];let t=[0,0,0,0];

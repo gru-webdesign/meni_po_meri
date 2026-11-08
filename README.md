@@ -16,7 +16,13 @@ Lični plan ishrane i praćenje, kao Android aplikacija.
 - Svetla i tamna tema, prilagođavanje uvećanom sistemskom fontu, zaštita od duplog dodira
 
 - Igra: biljka koja raste kroz 10 nivoa, listići za svaku dobru naviku, 3 dnevna izazova, pitanje dana, štit koji čuva niz, kolekcija probanih jela, konfete i večernji podsetnik za niz
-- Sekcije: Napredak (Kilaža, Navike, Ishrana, Nagrade), Jelovnik (Plan, Kuvar sa filterima i pretragom), Trening (Danas, Nedelja, Saveti), Profil u tabovima
+- Sekcije: Napredak (Kilaža, Navike, Ishrana, Nagrade), Jelovnik (Plan, Kuvar sa filterima i pretragom), Trening (Danas, Vežbe, Nedelja, Saveti), Profil u tabovima
+
+- Tempo: Umereno, Brže i Intenzivno (0,95% nedeljno, deficit iz ishrane do 30% potrošnje plus cilj kretanja u kcal); čarobnjak poredi datume za sva tri tempa
+- Upitnik u 9 koraka: cilj i razlog, kondicija, mesto i vreme za trening, zglobovi, trudnoća i dojenje, način ishrane, namirnice koje ne voliš, kuhinja i budžet, navike, san i stres
+- Obrok mimo plana: upis rečima („pileće belo u lepinji i pomfrit”), količine, oko 300 jela i pića, ostatak dana se sam prilagođava
+- 34 animirane vežbe (leđa, istezanje, joga, kalistenika, kardio bez skokova), 6 programa i vođeni trening sa tajmerom; vežbe se zaključavaju ili označavaju prema leđima i zglobovima
+- Detaljni recepti za svih 78 jela: koraci, vreme, težina, savet, količine „za mene / za oboje”, sopstvena fotografija jela
 
 ## Kako dobiti APK
 
@@ -33,7 +39,7 @@ Workflow pravi i `meni-po-meri.aab` kad u repou postoje tajne (Settings → Secr
 
 ## Izmene
 
-Aplikacija je u `www/`: `data.js` (namirnice, obroci), `kb.js` (savetnik), `app.js` (logika i ekrani), `v4.js` (prikazi, UX), `v5.js` (igra, sekcije, Danas, start).
+Aplikacija je u `www/`: `data.js` (namirnice, obroci), `kb.js` (savetnik), `app.js` (logika i ekrani), `v4.js` (prikazi, UX), `v5.js` (igra, sekcije, Danas), `recipes.js` (koraci recepata), `exercises.js` (animirane vežbe), `v6.js` (tempo, upitnik, slobodan unos, trening, recepti), `boot.js` (start).
 
 Lokalno, uz instaliran Android Studio:
 
@@ -45,4 +51,4 @@ npx cap open android
 
 ## Podaci
 
-Upisi se čuvaju na telefonu (i u Android rezervnoj kopiji). Za prelazak na drugi telefon: Profil → Podešavanja → Sačuvaj u fajl, pa Učitaj iz fajla.
+Upisi se čuvaju na telefonu (i u Android rezervnoj kopiji). Za prelazak na drugi telefon: Profil → Aplikacija → Sačuvaj u fajl, pa Učitaj iz fajla. Fotografije jela ostaju samo na telefonu.

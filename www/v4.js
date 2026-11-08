@@ -202,7 +202,7 @@ app.addEventListener('click',e=>{if(swipeClick){e.stopPropagation();e.preventDef
 /* ---------- Dupli dodir i nove akcije (pre glavnog rukovaoca) ---------- */
 let lastKey='',lastAt=0;
 function guard(e){const t=e.target.closest('button,input[type=checkbox]');if(!t)return;const ds=t.dataset;
-  if(!ds.trk&&!ds.sleep&&!ds.cnav){const key=(t.id||'')+'|'+Object.keys(ds).filter(k=>k!=='fr').sort().map(k=>k+'='+ds[k]).join('&');const now=Date.now();
+  if(!ds.trk&&!ds.sleep&&!ds.cnav&&!ds.cuq){const key=(t.id||'')+'|'+Object.keys(ds).filter(k=>k!=='fr').sort().map(k=>k+'='+ds[k]).join('&');const now=Date.now();
     if(key===lastKey&&now-lastAt<450){e.stopImmediatePropagation();e.preventDefault();return}lastKey=key;lastAt=now}
   if(ds.trk||ds.eat!==undefined||ds.ex||ds.energy||ds.shop||ds.health||ds.seg||ds.flag)hap();
   // nove akcije

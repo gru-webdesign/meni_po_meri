@@ -12,7 +12,7 @@ function mealIcon(m){if(ICON_CACHE[m.id])return ICON_CACHE[m.id];const n=norm(m.
     [/pilet|curet|batak|junet|svinj|raznj/,'fork-knife'],[/jogurt|kefir|kiselo mleko|smuti|puding|posni sir/,'bowl-food'],[/jabuk|krusk|pomorandz|kivi|banan|borovnic|jagod/,'orange'],
     [/orasi|badem|semenk/,'acorn'],[/sargarep|humus|salat|povrc|sopsk/,'carrot'],[/heljd|kinoa|kus|pirinac|rizot|testenin/,'grains']];
   for(const [re,i] of RULES)if(re.test(n))return ICON_CACHE[m.id]=i;return ICON_CACHE[m.id]='fork-knife'}
-const av=(m,type,cls='')=>`<span class="av-food t-${type} ${cls}" aria-hidden="true">${icd(mealIcon(m))}</span>`;
+let av=(m,type,cls='')=>`<span class="av-food t-${type} ${cls}" aria-hidden="true">${icd(mealIcon(m))}</span>`;
 
 /* ---------- Dnevnik: pamti id jela i prvo probanje ---------- */
 function eatMeal(key,slot,frac){const d=dayOf(key);const pl=planFor(key)[slot];
@@ -335,17 +335,3 @@ function detectBigText(){try{const sp=document.createElement('span');sp.style.cs
   const cv=document.createElement('canvas').getContext('2d');cv.font='16px Arial,sans-serif';const ratio=sp.getBoundingClientRect().width/cv.measureText('MMMMMMMMMM').width;sp.remove();
   document.body.classList.toggle('bigtext',ratio>1.12||innerWidth<340)}catch(e){}}
 window.addEventListener('resize',detectBigText);
-/* ================= START ================= */
-(async function boot(){
-  try{const P=PL('Preferences');if(P){const has=localStorage.getItem(LS);const r=await P.get({key:LS});
-    if(r&&r.value){const o=JSON.parse(r.value);if(!has||(o.updated||0)>(S.updated||0)){S=Object.assign({},DEF,o);S.p=Object.assign({},DEFP,o.p||{});try{localStorage.setItem(LS,r.value)}catch(e){}}}
-    else if(has){P.set({key:LS,value:has}).catch(()=>{})}}}catch(e){}
-  S.fav=S.fav||{};S.dis=S.dis||{};S.ms=S.ms||{};S.ui=S.ui||{};S.tried=S.tried||{};S.frozen=S.frozen||{};S.shK=S.shK||{};if(S.shields==null)S.shields=0;
-  applyTheme();detectBigText();
-  if(!S.setup){WIZ=0;TAB='wizard'}
-  let msg=null;
-  if(S.setup){backfillTried();msg=updateFreezes();if(S.lastOpen&&daysBetween(S.lastOpen,TODAY)>=3)msg=msg||'Drago nam je što si tu. Nastavljamo od danas.';S.lastOpen=TODAY;
-    if(S.lvlSeen==null)S.lvlSeen=levelOf(totalXP()).n;save()}
-  render();
-  if(S.setup){runReview(false);if(S.notif)scheduleReminders();checkMilestones();autoBackup();if(msg)setTimeout(()=>toast(msg),700)}
-})();
