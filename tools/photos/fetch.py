@@ -78,7 +78,7 @@ elif mode=='final':
         else:r=cand[mid][j]
         try:
             u=r['url']
-            if r['src']=='wm':u=re.sub(r'/\d+px-','/1024px-',u)
+            if r['src']=='wm':u=re.sub(r'/\d+px-','/960px-',u)
             data=None
             for t in range(4):
                 try:data=get(u,True);break
