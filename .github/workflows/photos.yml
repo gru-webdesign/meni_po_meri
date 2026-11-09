@@ -22,7 +22,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git checkout -B photos-work
-          if [ "${{ github.event.inputs.mode }}" = "candidates" ]; then mkdir -p tools/photos/review && cp out/* tools/photos/review/ && cp out/candidates.json tools/photos/candidates.json; fi
+          if [ "${{ github.event.inputs.mode }}" != "final" ]; then mkdir -p tools/photos/review && cp out/* tools/photos/review/ && cp out/candidates.json tools/photos/candidates.json; fi
           git add -A tools/photos www/img/meals
           git commit -m "Fotografije: ${{ github.event.inputs.mode }}" || true
           git push -f origin photos-work
