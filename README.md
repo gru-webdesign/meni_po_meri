@@ -16,7 +16,7 @@ Lični plan ishrane i praćenje, kao Android aplikacija.
 - UX: poništavanje u poruci, prevlačenje obroka (udesno upis, ulevo zamena), režim kuvanja sa tajmerom, omiljena jela i jela koja se ne nude, jutarnji check-in, deljenje spiska, vibracija
 - Svetla i tamna tema, prilagođavanje uvećanom sistemskom fontu, zaštita od duplog dodira
 
-- Igra: biljka koja raste kroz 10 nivoa, listići za svaku dobru naviku, 3 dnevna izazova, pitanje dana, štit koji čuva niz, kolekcija probanih jela, konfete i večernji podsetnik za niz
+- Igra: uspon po planinskim vrhovima (Avala, Rudnik, Zlatibor… Olimp, pa Mon Blan do Everesta), metri uspona za svaku dobru naviku, 3 dnevna izazova, pitanje dana, štit koji čuva niz, kolekcija probanih jela, konfete i večernji podsetnik za niz
 - Sekcije: Napredak (Kilaža, Navike, Ishrana, Nagrade), Jelovnik (Plan, Kuvar sa filterima i pretragom), Trening (Danas, Vežbe, Nedelja, Saveti), Profil u tabovima
 
 - Tempo: Umereno, Brže i Intenzivno (0,95% nedeljno, deficit iz ishrane do 30% potrošnje plus cilj kretanja u kcal); čarobnjak poredi datume za sva tri tempa
@@ -53,3 +53,7 @@ npx cap open android
 ## Podaci
 
 Upisi se čuvaju na telefonu (i u Android rezervnoj kopiji). Za prelazak na drugi telefon: Profil → Aplikacija → Sačuvaj u fajl, pa Učitaj iz fajla. Fotografije jela ostaju samo na telefonu.
+
+## Fotografije jela
+
+Fotografije su sa Openverse i Wikimedia Commons, pod licencama CC0, javno dobro, CC BY i CC BY-SA. Autori i licence su u `www/img/meals/credits.js` i u aplikaciji (Profil → Aplikacija → Izvori fotografija). Alat za pretragu i izbor je `tools/photos` i GitHub Actions „Fotografije jela”.
