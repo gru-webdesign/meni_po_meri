@@ -1471,6 +1471,39 @@ input[type=text],input[type=search],input[type=number],select,textarea,.mono-ta{
 .sh-row .ck{padding:0!important;grid-template-columns:1fr!important;gap:0!important;place-items:center;flex:none}
 .sh-row .ck .ic{width:15px!important;height:15px!important}
 .sh-row .ck + .ck{border:0}
+
+/* ================= v14: polja bez duplih okvira, prekidači bez sjaja, bez preostalih preliva ================= */
+:root{--hero:var(--bg)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--hero:var(--bg)}}
+:root[data-theme="dark"]{--hero:var(--bg)}
+/* jedno udubljeno polje, unutrašnji input providan */
+.srch,.composer form,.sh-addrow,.cu-srch{background:var(--bg)!important;border:0!important;box-shadow:var(--inset-sm)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.sh-addrow{border-radius:16px;padding:4px 4px 4px 12px;align-items:center}
+html body .srch input,html body .srch input:focus,html body .composer input,html body .composer textarea,html body .composer input:focus,html body .composer textarea:focus,html body .sh-addrow input,html body .sh-addrow input:focus{background:transparent!important;box-shadow:none!important;border:0!important;outline:none}
+.composer{background:transparent!important}
+.composer form{border-radius:24px}
+.composer .btn,.composer button[type=submit]{box-shadow:var(--raise-xs)!important}
+/* sastojci: obične linije, bez udubljenja */
+.ingr{background:transparent!important;box-shadow:none!important;padding:0!important}
+.ingr > div{border-bottom:1px solid var(--track)}
+.ingr > div:last-child{border-bottom:0}
+/* kartice koje su imale preliv ili ivicu */
+.kprog,.walkhero,.hero2,.plant-hero{background:var(--card)!important;border:0!important;box-shadow:var(--raise)!important}
+.kprog .lvl-bar,.kprog .mb-track{flex:1}
+.excard canvas,.exrow canvas,.exbig,.wo-stage{background:var(--bg)!important}
+.excard canvas,.exrow canvas{box-shadow:var(--inset-sm)}
+.exbig{box-shadow:var(--inset-sm)!important}
+/* prekidač: bez svetlog oreola */
+.switch{background:var(--track)!important;box-shadow:inset 2px 2px 4px var(--lo)!important}
+.switch::after{background:#FFFFFF!important;box-shadow:0 1px 3px rgba(0,0,0,.25)!important}
+.switch:checked{background:var(--accent)!important;box-shadow:inset 1px 1px 3px rgba(0,0,0,.18)!important}
+.thm::before{box-shadow:0 1px 3px rgba(0,0,0,.22)!important}
+:root[data-theme="dark"] .switch::after{background:#DCE5E1!important}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .switch::after{background:#DCE5E1!important}}
+/* opšte: nijedan element nema i ivicu i neumorfnu senku */
+.card *,.sheet-panel *{border-color:var(--track)}
+:root,:root[data-theme="dark"],:root[data-theme="light"]{--glass-brd:transparent!important}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--glass-brd:transparent!important}}
 </style>
 </head>
 <body>
