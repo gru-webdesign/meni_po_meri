@@ -1421,6 +1421,56 @@ input[type=text],input[type=search],input[type=number],select,textarea,.mono-ta{
 .toast .undo{color:var(--accent)}
 .cook,.wo{background:var(--bg)!important}
 .sheet-bg{background:rgba(0,0,0,.18)}
+
+/* ================= v13: svetlija pozadina, bez neon sjaja, vidljiva čekirana stanja ================= */
+:root{--bg:#F0F4F2;--surface:#F0F4F2;--surface-solid:#F0F4F2;--card:#F0F4F2;--ghost:#F0F4F2;--glass-bar:#F0F4F2;--glass-sheet:#F0F4F2;--track:#E4EBE7;
+  --hi:#FFFFFF;--lo:rgba(158,180,169,.42);--glow:0 0 0 transparent;--accent:#13906A;--on-accent:#FFFFFF;--ring-a:#13906A;--ring-b:#6ED3A6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:#3DB383;--accent-ink:#A9EBCF;--on-accent:#FFFFFF;--ring-a:#3DB383;--ring-b:#9BE3BF;--glow:0 0 0 transparent;--bg:#1C2321;--surface:#1C2321;--surface-solid:#1C2321;--card:#1C2321;--ghost:#1C2321;--glass-bar:#1C2321;--glass-sheet:#1C2321;--track:#151B19;--hi:rgba(255,255,255,.045);--lo:rgba(0,0,0,.55);}}
+:root[data-theme="dark"]{--accent:#3DB383;--accent-ink:#A9EBCF;--on-accent:#FFFFFF;--ring-a:#3DB383;--ring-b:#9BE3BF;--glow:0 0 0 transparent;--bg:#1C2321;--surface:#1C2321;--surface-solid:#1C2321;--card:#1C2321;--ghost:#1C2321;--glass-bar:#1C2321;--glass-sheet:#1C2321;--track:#151B19;--hi:rgba(255,255,255,.045);--lo:rgba(0,0,0,.55);}
+/* bez sjaja i preliva na dugmadima */
+.btn{background:var(--accent)!important;box-shadow:var(--raise-sm)!important}
+.btn.cta{background:var(--coral)!important;box-shadow:var(--raise-sm)!important}
+.rb.plus,.hab.water .rb.plus,.hab.cola .rb.plus{box-shadow:var(--raise-xs)!important}
+.seg button.on,.segtabs button.on,.chip-t.on,.fchips .chip-t.on,.chips .chip-t.on,.seg5 button.on,.days7 .chip-t.on,.day.on{box-shadow:var(--raise-xs)!important}
+.tab.on .ic{filter:none}
+.td-meals i.on{background:var(--accent)!important;box-shadow:none!important}
+.progx .go{box-shadow:var(--raise-xs)}
+.pacec.on{box-shadow:var(--inset-sm)!important;outline:2px solid var(--accent);outline-offset:-2px}
+/* čekirana stanja uvek vidljiva */
+.tick{color:transparent}
+.tick.on,.mrow.done .tick{background:var(--accent)!important;color:var(--on-accent)!important;box-shadow:var(--raise-xs)!important}
+.tick.on .ic,.mrow.done .tick .ic{color:var(--on-accent)!important;opacity:1}
+.tick.half{background:var(--bg)!important;color:var(--accent)!important;box-shadow:var(--inset-sm)!important}
+.tick.del{color:var(--muted)!important}
+.shop-item input{background:var(--bg);border:0!important;box-shadow:var(--inset-sm)}
+.shop-item input:checked{background:var(--accent)!important;box-shadow:var(--raise-xs)}
+.sh-row .ck{border:0!important;background:var(--bg);box-shadow:var(--inset-sm)}
+.sh-row.done .ck,.sh-row.ed.on .ck{background:var(--accent)!important;box-shadow:var(--raise-xs)!important;color:var(--on-accent)!important}
+.imm-ok,.pg-done,.progx .dn{box-shadow:var(--raise-xs)}
+.switch{background:var(--bg)!important;box-shadow:var(--inset-sm)}
+.switch::after{background:var(--bg)!important;box-shadow:var(--raise-xs)!important}
+.switch:checked{background:var(--accent)!important}
+.switch:checked::after{background:#fff!important}
+/* obaveštenje: dugme Poništi je tekst */
+.toast .undo{background:transparent!important;color:var(--accent)!important;box-shadow:none!important;padding:8px 6px;font-weight:800}
+/* pitanje dana bez obojene pozadine */
+.quizrow{background:var(--bg)!important;box-shadow:var(--raise-xs)}
+.quizrow .qi2{background:var(--bg)!important;box-shadow:var(--inset-sm);color:var(--blue)}
+.mrow.done .nm{color:var(--muted)}
+
+:root{--coral:#D35E44}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--on-accent:#06231A;--coral:#F08A6E}}
+:root[data-theme="dark"]{--on-accent:#06231A;--coral:#F08A6E}
+:root[data-theme="dark"] .btn.cta,:root[data-theme="dark"] .hab.cola .rb.plus{color:#2A0E07!important}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.cta,:root:not([data-theme="light"]) .hab.cola .rb.plus{color:#2A0E07!important}}
+.hab.cola .rb.plus,.hab.water .rb.plus{color:#fff}
+:root[data-theme="dark"] .hab.water .rb.plus{color:#081A33!important}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hab.water .rb.plus{color:#081A33!important}}
+.peak.next{background:var(--accent)!important;box-shadow:var(--raise-xs)!important;color:var(--on-accent)!important}
+.peak.next b,.peak.next small,.peak.next span{color:var(--on-accent)!important}
+.sh-row .ck{padding:0!important;grid-template-columns:1fr!important;gap:0!important;place-items:center;flex:none}
+.sh-row .ck .ic{width:15px!important;height:15px!important}
+.sh-row .ck + .ck{border:0}
 </style>
 </head>
 <body>
