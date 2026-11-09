@@ -29,15 +29,16 @@ toastEl.addEventListener('click',e=>{if(e.target.closest('#undoBtn')&&undoFn){co
 /* ---------- Jelovnik: omiljena jela i ona koja ne voliš ---------- */
 function pool(type){const x=exclTags();const all=LIB.filter(m=>m.t.includes(type));let ok=all.filter(m=>!m.tg.some(t=>x.includes(t)));if(!ok.length)ok=all;
   const nd=ok.filter(m=>!S.dis[m.id]);return nd.length?nd:ok}
+function protOf(m){if((m.tg||[]).includes('riba'))return 'riba';const II=m.i||m.items||[],it=II.find(x=>N[x.k]&&N[x.k][3]==='meso');if(it){const G={cureciFile:'curetina',cureceMleveno:'curetina',piletina:'piletina',batak:'piletina',junetina:'junetina',junecaMlevena:'junetina',svinjskiFile:'svinjetina'};return G[it.k]||(/losos|oslic|pastrmka|tuna|sardine|skusa/.test(it.k)?'riba':it.k)}const lg=II.find(x=>/socivo|leblebij|pasulj/.test(x.k));return lg?'mahunarke':'x:'+m.id}
 function planFor(key){
   const n=+S.p.mealsN||5, slots=SLOTS[n], share=SHARE[n], offs=OFFS[n], kt=target(), di=dIdx(key), wi=weekIdx(key);
-  const bf=(di>=5)?timeAdd(S.p.bf,1):S.p.bf;let sCount=0;const used=new Set();
+  const bf=(di>=5)?timeAdd(S.p.bf,1):S.p.bf;let sCount=0;const used=new Set(),usedP=new Set();
   return slots.map((type,i)=>{
     const P=pool(type), ord=shuffled(P.concat(P.filter(m=>S.fav[m.id])),wi*97+type.charCodeAt(0)*13+n);
     const rank=type==='s'?sCount++:0;let idx=(di+rank*3)%ord.length,m=ord[idx];
-    for(let k=0;k<ord.length&&used.has(m.id);k++){idx=(idx+1)%ord.length;m=ord[idx]}
+    const clash=z=>used.has(z.id)||((type==='l'||type==='v')&&usedP.has(protOf(z)));for(let k=0;k<ord.length&&clash(m);k++){idx=(idx+1)%ord.length;m=ord[idx]}
     const ov=S.ovr[key]&&S.ovr[key][i];if(ov){const mm=LIB.find(x=>x.id===ov);if(mm)m=mm}
-    used.add(m.id);
+    used.add(m.id);if(type==='l'||type==='v')usedP.add(protOf(m));
     return {slot:i,type,time:timeAdd(bf,offs[i]),meal:scaleMeal(m,kt*share[i])};
   });
 }

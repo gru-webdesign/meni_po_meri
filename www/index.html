@@ -8,6 +8,16 @@
 <meta name="color-scheme" content="light dark">
 <title>Meni po meri</title>
 <style>
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-ext-500-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-ext-700-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-ext-800-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Jakarta";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/plus-jakarta-sans-latin-800-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:"Figtree";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/figtree-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:"Figtree";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/figtree-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:"Figtree";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/figtree-latin-ext-500-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
@@ -1047,6 +1057,99 @@ svg.mtn{width:100%;height:auto;display:block}
 .kcard > b,.kcard > .km{padding:0 6px}
 .kcard .tried{top:14px;right:14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .srch input,.srch input:focus{border:0!important;background:transparent}
+
+/* ================= v8: premium prolaz ================= */
+:root{--font:"Jakarta","Figtree",system-ui,-apple-system,sans-serif;--display:var(--font);--mono:var(--font);
+  --card:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.66) 100%);
+  --card-edge:inset 0 1px 0 rgba(255,255,255,1),inset 0 0 0 1px rgba(255,255,255,.55);
+  --card-shadow:0 18px 40px -26px rgba(28,86,58,.42),0 2px 6px -2px rgba(28,86,58,.06);
+  --chip:rgba(255,255,255,.7);--ghost:rgba(22,74,48,.065);--track:rgba(22,74,48,.09);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  --ring-a:#1FA35A;--ring-b:#9BDB6F;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#07100C;--card:linear-gradient(180deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.03) 100%);
+  --card-edge:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(255,255,255,.035);
+  --card-shadow:0 26px 50px -30px rgba(0,0,0,.95);--chip:rgba(255,255,255,.07);--ghost:rgba(255,255,255,.075);--track:rgba(255,255,255,.08);
+  --glass-bar:rgba(12,22,17,.72);--glass-sheet:rgba(12,20,16,.92);--ring-a:#34D07F;--ring-b:#C2F27A;
+  --bg-grad:radial-gradient(75% 42% at 12% -6%,rgba(52,208,127,.40) 0%,rgba(52,208,127,0) 72%),radial-gradient(60% 36% at 108% 38%,rgba(255,132,98,.22) 0%,rgba(255,132,98,0) 72%),radial-gradient(70% 40% at -12% 96%,rgba(60,150,210,.14) 0%,rgba(60,150,210,0) 72%),linear-gradient(180deg,#0B1712 0%,#07100C 55%,#0A0C0B 100%)}}
+:root[data-theme="dark"]{
+  --bg:#07100C;--card:linear-gradient(180deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.03) 100%);
+  --card-edge:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(255,255,255,.035);
+  --card-shadow:0 26px 50px -30px rgba(0,0,0,.95);--chip:rgba(255,255,255,.07);--ghost:rgba(255,255,255,.075);--track:rgba(255,255,255,.08);
+  --glass-bar:rgba(12,22,17,.72);--glass-sheet:rgba(12,20,16,.92);--ring-a:#34D07F;--ring-b:#C2F27A;
+  --bg-grad:radial-gradient(75% 42% at 12% -6%,rgba(52,208,127,.40) 0%,rgba(52,208,127,0) 72%),radial-gradient(60% 36% at 108% 38%,rgba(255,132,98,.22) 0%,rgba(255,132,98,0) 72%),radial-gradient(70% 40% at -12% 96%,rgba(60,150,210,.14) 0%,rgba(60,150,210,0) 72%),linear-gradient(180deg,#0B1712 0%,#07100C 55%,#0A0C0B 100%)}
+:root:not([data-theme="dark"]){--bg-grad:radial-gradient(80% 45% at 8% -4%,#BFE8D0 0%,rgba(191,232,208,0) 72%),radial-gradient(70% 40% at 108% 42%,#FFD6C6 0%,rgba(255,214,198,0) 72%),radial-gradient(70% 40% at -10% 100%,#D7ECF7 0%,rgba(215,236,247,0) 72%),linear-gradient(180deg,#E9F5EE 0%,#F4F2EC 60%,#FBEDE6 100%)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg-grad:radial-gradient(75% 42% at 12% -6%,rgba(52,208,127,.40) 0%,rgba(52,208,127,0) 72%),radial-gradient(60% 36% at 108% 38%,rgba(255,132,98,.22) 0%,rgba(255,132,98,0) 72%),radial-gradient(70% 40% at -12% 96%,rgba(60,150,210,.14) 0%,rgba(60,150,210,0) 72%),linear-gradient(180deg,#0B1712 0%,#07100C 55%,#0A0C0B 100%)}}
+body{font-family:var(--font);letter-spacing:-.006em;-webkit-font-smoothing:antialiased}
+body::before{background:var(--grain),var(--bg-grad)}
+.n,b.n,.big,.nums b,.cu-tot b{font-variant-numeric:tabular-nums}
+h1,h2,h3,.wiz-h,.phead h1{letter-spacing:-.028em}
+.phead h1{font-size:32px;font-weight:800;line-height:1.05}
+.hello{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:0}
+.card h2,.sec-title h2{font-size:18px;font-weight:700}
+.small,.muted{letter-spacing:0}
+/* površine */
+.card,.act-card,.excard,.kcard,.tile,.next2,.mtn-hero,.today,.why,.progx,.wocard{background:var(--card)!important;border:0!important;box-shadow:var(--card-edge),var(--card-shadow)!important}
+.tile .t-ic{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:var(--ghost)}
+.tile.water .t-ic{color:var(--blue)}.tile.cola .t-ic{color:var(--red)}.tile.walk .t-ic{color:var(--accent)}
+.tl .mrow{background:var(--ghost)!important;border:0!important;border-radius:20px}
+.st-chip{background:var(--chip)!important;border:0!important;box-shadow:none!important;min-height:38px;padding:6px 14px 6px 10px}
+.st-chip small{font-weight:500}
+.btn{background:linear-gradient(180deg,color-mix(in oklab,var(--accent) 82%,#fff) 0%,var(--accent) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 10px 22px -12px var(--accent);font-weight:700;letter-spacing:-.01em}
+.btn.ghost,.icon-btn,.chip-t,.seg,.fchips .chip-t,.chips .chip-t{background:var(--ghost)!important;border:0!important;box-shadow:none}
+.btn.ghost{color:var(--ink)}
+.chip-t.on,.fchips .chip-t.on,.chips .chip-t.on{background:var(--accent)!important;color:var(--on-accent)}
+.btn:active,.icon-btn:active,.chip-t:active{transform:scale(.97)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* plutajuća traka */
+nav.tabs{left:12px;right:12px;bottom:calc(10px + var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px)));border:0;border-radius:28px;padding-bottom:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 40px -16px rgba(0,0,0,.45),0 0 0 1px var(--glass-brd)}
+.tabs-in{padding:4px}
+.tab{padding:8px 2px 8px}
+.tab .bg{opacity:0}.tab.on .bg{opacity:1;background:var(--accent);top:4px;width:60px;height:32px}
+.tab.on .ic{color:var(--on-accent);position:relative}
+.tab.on{color:var(--ink)}
+#app{padding-bottom:calc(112px + var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px)))!important}
+.composer{bottom:calc(84px + var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px)))}
+/* razlog u zaglavlju */
+.why2{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.why2 .ic{width:15px;height:15px;color:var(--red)}
+/* Danas: novi hero */
+.today{border-radius:28px;padding:20px 18px 16px;display:grid;gap:16px;position:relative;overflow:hidden}
+.today::after{content:"";position:absolute;width:220px;height:220px;right:-70px;top:-90px;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--accent) 35%,transparent) 0%,transparent 70%);pointer-events:none}
+.td-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;position:relative;z-index:1}
+.td-k{display:grid;gap:2px;min-width:0}
+.td-k .eyebrow{font-size:13px;font-weight:600;color:var(--muted)}
+.td-k b{font-size:46px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.td-k b.over{color:var(--red)}
+.td-k .u{font-size:14px;color:var(--muted);font-weight:500}
+.td-ring{position:relative;width:112px;height:112px;flex:none}
+.td-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.td-ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.td-ring .c b{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.td-ring .c span{font-size:11px;color:var(--muted);font-weight:600}
+.td-meals{display:flex;align-items:center;gap:6px;position:relative;z-index:1}
+.td-meals i{flex:1;height:6px;border-radius:99px;background:var(--track)}
+.td-meals i.on{background:linear-gradient(90deg,var(--ring-a),var(--ring-b))}
+.td-meals i.half{background:linear-gradient(90deg,var(--ring-a) 50%,var(--track) 50%)}
+.td-meals span{font-size:12px;font-weight:600;color:var(--muted);margin-left:6px;white-space:nowrap}
+.mac3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1}
+.mac{background:var(--ghost);border-radius:18px;padding:10px 10px 11px;display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:center;min-width:0}
+.mac svg{grid-row:1/3;width:34px;height:34px;transform:rotate(-90deg)}
+.mac b{font-size:15px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.mac b small{font-size:11px;font-weight:600;color:var(--muted)}
+.mac span{font-size:11.5px;color:var(--muted);font-weight:600}
+@media (max-width:370px){.mac{grid-template-columns:1fr;justify-items:start}.mac svg{grid-row:auto;width:28px;height:28px}.td-k b{font-size:40px}.td-ring{width:96px;height:96px}}
+body.bigtext .mac3{grid-template-columns:1fr}
+body.bigtext .mac{grid-template-columns:auto 1fr auto}
+body.bigtext .mac svg{grid-row:auto}
+body.bigtext .td-top{grid-template-columns:1fr}
+body.bigtext .td-ring{justify-self:start}
+/* sledeći obrok */
+.next2 .av-food.lg{width:84px;height:84px;border-radius:22px}
+.next2 .lbl{letter-spacing:0}
+.nc-name{font-size:20px;letter-spacing:-.025em}
 </style>
 </head>
 <body>
@@ -1075,6 +1178,7 @@ svg.mtn{width:100%;height:auto;display:block}
 <script src="shop.js"></script>
 <script src="img/meals/credits.js"></script>
 <script src="v7.js"></script>
+<script src="v8.js"></script>
 <script src="boot.js"></script>
 </body>
 </html>

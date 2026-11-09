@@ -89,7 +89,8 @@ function planFor(key){
   });
 }
 function swapMeal(key,slot){const pl=planFor(key)[slot];const P=pool(pl.type);const i=P.findIndex(m=>m.id===pl.meal.id);
-  const used=planFor(key).map(x=>x.meal.id);let nx=P[(i+1)%P.length];for(let k=1;k<P.length;k++){const c=P[(i+k)%P.length];if(!used.includes(c.id)){nx=c;break}}
+  const all=planFor(key),used=all.map(x=>x.meal.id),main=pl.type==='l'||pl.type==='v',prots=all.filter(x=>x.slot!==slot&&(x.type==='l'||x.type==='v')).map(x=>typeof protOf==='function'?protOf(LIB.find(z=>z.id===x.meal.id)||x.meal):'');let nx=P[(i+1)%P.length];
+  for(const strict of [true,false]){let f=null;for(let k=1;k<P.length;k++){const c=P[(i+k)%P.length];if(!used.includes(c.id)&&(!strict||!main||!prots.includes(protOf(c)))){f=c;break}}if(f){nx=f;break}}
   S.ovr[key]=S.ovr[key]||{};S.ovr[key][slot]=nx.id;save();return nx}
 const QF=q=>{const w=Math.floor(q),fr=q-w;const f=fr>=0.74?'¾':fr>=0.49?'½':fr>=0.24?'¼':'';return (w?w:'')+(f||(w?'':'0'))};
 function unitStr(u,q){const f=UNITS[u]||[u,u,u];if(q===1)return f[0];if(q<1||q%1!==0)return f[1];if(q>=2&&q<=4)return f[1];return f[2]}
