@@ -11,8 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
+        with:
+          python-version: '3.12'
       - run: pip install pillow
-      - run: python tools/photos/fetch.py ${{ github.event.inputs.mode }}
+      - run: python tools/photos/fetch.py "${{ github.event.inputs.mode }}"
       - uses: actions/upload-artifact@v4
-        with: {name: photos-${{ github.event.inputs.mode }}, path: out}
+        with:
+          name: photos-${{ github.event.inputs.mode }}
+          path: out
