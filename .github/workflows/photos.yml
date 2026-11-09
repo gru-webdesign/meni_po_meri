@@ -5,6 +5,8 @@ on:
       mode:
         description: candidates ili final
         default: candidates
+permissions:
+  contents: write
 jobs:
   photos:
     runs-on: ubuntu-latest
@@ -15,7 +17,12 @@ jobs:
           python-version: '3.12'
       - run: pip install pillow
       - run: python tools/photos/fetch.py "${{ github.event.inputs.mode }}"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: photos-${{ github.event.inputs.mode }}
-          path: out
+      - name: Sačuvaj rezultat u granu photos-work
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git checkout -B photos-work
+          if [ "${{ github.event.inputs.mode }}" = "candidates" ]; then mkdir -p tools/photos/review && cp out/* tools/photos/review/ && cp out/candidates.json tools/photos/candidates.json; fi
+          git add -A tools/photos www/img/meals
+          git commit -m "Fotografije: ${{ github.event.inputs.mode }}" || true
+          git push -f origin photos-work

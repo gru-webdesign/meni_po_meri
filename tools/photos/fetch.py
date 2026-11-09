@@ -1,8 +1,9 @@
 import json,os,sys,time,urllib.parse,urllib.request,io
+from concurrent.futures import ThreadPoolExecutor
 from PIL import Image,ImageDraw,ImageFont,ImageOps
 UA={'User-Agent':'MeniPoMeri/1.0 (github.com/gru-webdesign/meni_po_meri)'}
 def get(url,binary=False):
-    r=urllib.request.urlopen(urllib.request.Request(url,headers=UA),timeout=30);d=r.read();return d if binary else json.loads(d)
+    r=urllib.request.urlopen(urllib.request.Request(url,headers=UA),timeout=15);d=r.read();return d if binary else json.loads(d)
 def openverse(q):
     u='https://api.openverse.org/v1/images/?'+urllib.parse.urlencode({'q':q,'license':'cc0,pdm,by,by-sa','category':'photograph','page_size':10,'mature':'false'})
     try:return [{'src':'ov','id':x['id'],'thumb':x.get('thumbnail'),'url':x['url'],'title':x.get('title'),'creator':x.get('creator'),'license':x['license'],'lv':x.get('license_version'),'page':x.get('foreign_landing_url'),'w':x.get('width'),'h':x.get('height')} for x in get(u).get('results',[])]
@@ -26,7 +27,7 @@ if mode=='candidates':
             for r in openverse(q)+commons(q):
                 if r['url'] in seen:continue
                 seen.add(r['url']);res.append(r)
-            time.sleep(2)
+            time.sleep(1)
         cand[mid]=res[:12];print(mid,len(cand[mid]))
     json.dump(cand,open('out/candidates.json','w'),indent=1)
     font=ImageFont.load_default()
@@ -35,18 +36,20 @@ if mode=='candidates':
         sheet=Image.new('RGB',(90+12*(TW+6),8*(TH+24)),'white');dr=ImageDraw.Draw(sheet)
         for row,mid in enumerate(ids[s:s+8]):
             y=row*(TH+24);dr.text((4,y+60),mid,fill='black',font=font)
+            def dl(r):
+                try:return Image.open(io.BytesIO(get(r['thumb'] or r['url'],True))).convert('RGB')
+                except Exception as e:print('thumb err',mid,e);return None
+            with ThreadPoolExecutor(8) as ex:ims=list(ex.map(dl,cand[mid]))
             for j,r in enumerate(cand[mid]):
-                try:
-                    im=Image.open(io.BytesIO(get(r['thumb'] or r['url'],True))).convert('RGB');im=ImageOps.fit(im,(TW,TH));sheet.paste(im,(90+j*(TW+6),y))
-                except Exception as e:print('thumb err',mid,j,e)
+                if ims[j]:sheet.paste(ImageOps.fit(ims[j],(TW,TH)),(90+j*(TW+6),y))
                 dr.text((90+j*(TW+6)+3,y+TH+4),f"{j} {r['src']} {r['license']}",fill='black',font=font)
         sheet.save(f'out/sheet_{s//8:02d}.jpg',quality=80)
 elif mode=='final':
-    cand=json.load(open('tools/photos/candidates.json'));picks=json.load(open('tools/photos/picks.json'));os.makedirs('out/meals',exist_ok=True);credits={}
+    cand=json.load(open('tools/photos/candidates.json'));picks=json.load(open('tools/photos/picks.json'));os.makedirs('www/img/meals',exist_ok=True);credits={}
     for mid,j in picks.items():
         r=cand[mid][j]
         try:
-            im=Image.open(io.BytesIO(get(r['url'],True))).convert('RGB');im=ImageOps.fit(im,(720,540),centering=(0.5,0.5));im.save(f'out/meals/{mid}.jpg',quality=76,optimize=True,progressive=True)
+            im=Image.open(io.BytesIO(get(r['url'],True))).convert('RGB');im=ImageOps.fit(im,(720,540),centering=(0.5,0.5));im.save(f'www/img/meals/{mid}.jpg',quality=76,optimize=True,progressive=True)
             credits[mid]={k:r.get(k) for k in ['title','creator','license','lv','page','src']}
         except Exception as e:print('final err',mid,e)
-    json.dump(credits,open('out/meals/credits.json','w'),ensure_ascii=False,indent=1)
+    open('www/img/meals/credits.js','w').write('const MEAL_CREDITS='+json.dumps(credits,ensure_ascii=False)+';\n')
