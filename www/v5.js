@@ -83,12 +83,13 @@ const QUIZ=[
  ['Šta je bolje za doručak ako želiš energiju do ručka?',['Ovsena kaša i jaje','Kroasan i kafa','Samo kafa'],0,'Kombinacija vlakana i proteina daje stabilnu energiju bez naglog pada.']];
 const quizIdx=k=>daysBetween('2024-01-01',k)%QUIZ.length;
 function quizSheet(){const d=dayOf(),q=QUIZ[quizIdx(TODAY)],a=d.quiz;
-  return `<div class="sheet-head"><div><div class="w">Pitanje dana · +10 listića</div><h2 id="sheetTitle">${esc(q[0])}</h2></div>${closeBtn}</div>
+  return `<div class="sheet-head"><div><div class="w">Pitanje dana · +20 m uspona</div><h2 id="sheetTitle">${esc(q[0])}</h2></div>${closeBtn}</div>
   <div class="qopts">${q[1].map((o,i)=>`<button class="qopt ${a?(i===q[2]?'ok':(i===a.a?'bad':'')):''}" data-qa="${i}" ${a?'disabled':''}><span>${esc(o)}</span>${a&&i===q[2]?ic('check','sm'):a&&i===a.a?ic('x','sm'):''}</button>`).join('')}</div>
-  ${a?`<div class="tip ${a.ok?'':'soft-blue'}">${icd(a.ok?'seal-check':'lightbulb')}<div><b>${a.ok?'Tačno! +10 listića':'Skoro. +3 listića za trud'}</b><span>${esc(q[3])}</span></div></div><p class="small muted" style="margin-top:12px">Novo pitanje stiže sutra.</p>`:'<p class="small muted">Jedan pokušaj dnevno. Tačan odgovor donosi 10 listića.</p>'}`}
+  ${a?`<div class="tip ${a.ok?'':'soft-blue'}">${icd(a.ok?'seal-check':'lightbulb')}<div><b>${a.ok?'Tačno! +20 m uspona':'Skoro. +6 m za trud'}</b><span>${esc(q[3])}</span></div></div><p class="small muted" style="margin-top:12px">Novo pitanje stiže sutra.</p>`:'<p class="small muted">Jedan pokušaj dnevno. Tačan odgovor donosi 20 m uspona.</p>'}`}
 
 /* ---------- Listići i nivoi ---------- */
-const LEVELS=[[0,'Seme','grains'],[80,'Klica','plant'],[250,'Izdanak','potted-plant'],[550,'Lala','flower-tulip'],[1000,'Cvet','flower'],[1700,'Lokvanj','flower-lotus'],[2600,'Mlado drvo','tree'],[3800,'Bor','tree-evergreen'],[5300,'Hrast','acorn'],[7500,'Šuma','tree-evergreen']];
+const PEAKS=[['Podnožje',0],['Avala',511],['Rudnik',1132],['Zlatibor',1496],['Suva planina',1810],['Kopaonik',2017],['Stara planina',2169],['Durmitor',2523],['Prokletije',2656],['Triglav',2864],['Olimp',2918],['Mon Blan',4808],['Elbrus',5642],['Kilimandžaro',5895],['Akonkagva',6961],['Everest',8849]];
+const LEVELS=PEAKS;
 function xpOfDay(k){const d=S.days[k];if(!d)return 0;let x=0;
   Object.values(d.eat||{}).forEach(e=>{if(e)x+=e.fr>=1?10:5});
   x+=Math.floor(Math.min(d.water||0,3000)/250)*2;x+=Math.floor(Math.min(d.walk||0,60)/2);
@@ -97,10 +98,9 @@ function xpOfDay(k){const d=S.days[k];if(!d)return 0;let x=0;
   if(k>=(S.start||k)){const q=questsFor(k);x+=q.filter(z=>z.done).length*15;if(q.every(z=>z.done))x+=30}
   return x}
 function totalXP(){let x=0;Object.keys(S.days).forEach(k=>x+=xpOfDay(k));x+=S.weights.length*5+Object.keys(S.ms||{}).length*25;return x}
-function levelOf(xp){let i=0;while(i+1<LEVELS.length&&xp>=LEVELS[i+1][0])i++;
-  if(i===LEVELS.length-1){const extra=Math.floor((xp-LEVELS[i][0])/3000);const base=LEVELS[i][0]+extra*3000;return {n:i+1+extra,name:extra?'Šuma '+(extra+1):LEVELS[i][1],icon:LEVELS[i][2],from:base,to:base+3000,xp}}
-  return {n:i+1,name:LEVELS[i][1],icon:LEVELS[i][2],from:LEVELS[i][0],to:LEVELS[i+1][0],xp,next:LEVELS[i+1][1]}}
-
+/* metri uspona = 2 × poeni; svaki nivo je jedan osvojen vrh */
+function levelOf(xp){const m=xp*2;let cum=0,i=0;while(true){const nx=i+1<PEAKS.length?PEAKS[i+1]:['Everest, ponovo',8849];if(m<cum+nx[1]){
+    const cur=i<PEAKS.length?PEAKS[i]:['Everest',8849];return {n:i+1,name:cur[0],h:cur[1],icon:'mountains',from:cum,to:cum+nx[1],xp:m,next:nx[0],nextH:nx[1]}}cum+=nx[1];i++}}
 /* ---------- Niz i štit ---------- */
 function streakInfo(){const ok=k=>(dayScore(k)||0)>=0.65;let n=0,k=TODAY,start=TODAY;if(!ok(k))k=addDays(k,-1);
   for(let i=0;i<999;i++){if(ok(k)){n++;start=k}else if(!S.frozen[k])break;k=addDays(k,-1)}return {n,start}}
@@ -118,12 +118,12 @@ function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)re
   const t0=performance.now();(function f(t){const e=t-t0;x.clearRect(0,0,W,H);P.forEach(p=>{p.vy+=.33;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.globalAlpha=Math.max(0,1-e/2400);x.fillStyle=p.c;
     if(p.s)x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);else{x.beginPath();x.arc(0,0,p.r/3,0,7);x.fill()}x.restore()});if(e<2400)requestAnimationFrame(f);else c.remove()})(t0)}
 function showLevelUp(lv){confetti();hap('success');const o=document.createElement('div');o.className='lvlup';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
-  o.innerHTML=`<div class="box"><span class="plant-pot">${icd(lv.icon)}</span><div class="small muted" style="font-weight:700">Nivo ${lv.n}</div><h2>Tvoja biljka je sada ${esc(lv.name)}</h2><p class="muted">Raste svaki put kad se vratiš i upišeš dan. Samo tako nastavi.</p><button class="btn block" data-lvlok="1">Super</button></div>`;
+  o.innerHTML=`<div class="box"><div class="lvl-mtn">${mountainSVG(lv,1)}</div><div class="small muted" style="font-weight:700">Nivo ${lv.n} · osvojen vrh</div><h2>${esc(lv.name)}, ${fmtK(lv.h)} m</h2><p class="muted">Sledeći cilj je ${esc(lv.next)}, ${fmtK(lv.nextH)} m. Svaki upisan dan je novi uspon.</p><button class="btn block" data-lvlok="1">Idemo dalje</button></div>`;
   document.body.appendChild(o);o.addEventListener('click',e=>{if(e.target.closest('[data-lvlok]')||e.target===o)o.remove()})}
 let celebrating=false;
 function afterSave(){if(celebrating||!S.setup)return;celebrating=true;try{const lv=levelOf(totalXP());let dirty=false;
   if(S.lvlSeen==null){S.lvlSeen=lv.n;dirty=true}else if(lv.n>S.lvlSeen){S.lvlSeen=lv.n;dirty=true;setTimeout(()=>showLevelUp(lv),500)}
-  const d=S.days[TODAY];if(d){const q=questsFor(TODAY);if(q.every(z=>z.done)&&!d.qb){d.qb=true;dirty=true;setTimeout(()=>{confetti();hap('success');toast('Svi izazovi! +30 listića bonusa')},350)}
+  const d=S.days[TODAY];if(d){const q=questsFor(TODAY);if(q.every(z=>z.done)&&!d.qb){d.qb=true;dirty=true;setTimeout(()=>{confetti();hap('success');toast('Svi izazovi! +60 m uspona bonusa')},350)}
     const n=+S.p.mealsN||5;if(Object.keys(d.eat||{}).length>=n&&!d.allc){d.allc=true;dirty=true;setTimeout(()=>{confetti();toast('Svi obroci za danas su upisani')},350)}}
   if(dirty)try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}finally{celebrating=false}}
 save=(function(orig){return function(){orig();setTimeout(afterSave,0)}})(save);
@@ -144,10 +144,10 @@ function tile2(kind,label,icon,val,goal,frac,key,step,plus,over){
   <div class="t-act"><button class="minus" data-trk="${key}" data-v="-${step}" aria-label="Oduzmi">${ic('minus','sm')}</button><button class="plus" data-trk="${key}" data-v="${step}">${plus}</button></div></div>`}
 function questsCard(){const d=dayOf(),qs=questsFor(TODAY),done=qs.filter(q=>q.done).length,qa=d.quiz;
   return `<section class="card quests"><div class="sec-title"><h2>Današnji izazovi</h2><span class="pill ${done===3?'soft':'line'} n">${done}/3</span></div>
-   ${qs.map(q=>`<div class="q ${q.done?'done':''}"><span class="qi2">${q.done?ic('check'):icd(q.ic)}</span><span class="qt"><b>${esc(q.t)}</b><small>${q.blocked?'Danas nije uspelo, sutra novi izazov':q.hint&&!q.done?esc(q.hint)+' · ':''}${q.blocked?'':'+15 listića'}</small></span>
+   ${qs.map(q=>`<div class="q ${q.done?'done':''}"><span class="qi2">${q.done?ic('check'):icd(q.ic)}</span><span class="qt"><b>${esc(q.t)}</b><small>${q.blocked?'Danas nije uspelo, sutra novi izazov':q.hint&&!q.done?esc(q.hint)+' · ':''}${q.blocked?'':'+30 m'}</small></span>
      ${q.done?(q.manual?`<button class="qundo" data-qclaim="${q.id}" aria-label="Poništi">${ic('arrow-counter-clockwise','sm')}</button>`:'<span></span>'):q.manual&&!q.blocked?`<button class="qclaim" data-qclaim="${q.id}">Gotovo</button>`:`<span class="qp">${esc(q.p||'')}</span>`}</div>`).join('')}
-   <div class="qbonus">${icd('gift')}<span>${done===3?'Bonus od 30 listića je tvoj!':'Sva tri izazova donose još 30 listića'}</span></div>
-   <button class="quizrow ${qa?'done':''}" data-quiz="1"><span class="qi2">${icd(qa?(qa.ok?'seal-check':'lightbulb'):'question')}</span><span class="qt"><b>Pitanje dana</b><small>${qa?(qa.ok?'Tačno odgovoreno · +10':'Odgovoreno · +3'):'Jedno pitanje o ishrani · +10 listića'}</small></span>${ic('caret-right','sm')}</button></section>`}
+   <div class="qbonus">${icd('gift')}<span>${done===3?'Bonus od 60 m uspona je tvoj!':'Sva tri izazova donose još 60 m uspona'}</span></div>
+   <button class="quizrow ${qa?'done':''}" data-quiz="1"><span class="qi2">${icd(qa?(qa.ok?'seal-check':'lightbulb'):'question')}</span><span class="qt"><b>Pitanje dana</b><small>${qa?(qa.ok?'Tačno odgovoreno · +10':'Odgovoreno · +3'):'Jedno pitanje o ishrani · +20 m'}</small></span>${ic('caret-right','sm')}</button></section>`}
 function viewDanas(){
   const d=dayOf(),pl=planFor(TODAY),mt=macroT(),tot=dayTotals(),wg=waterT(),sp=sodaPlan(),wt=walkT();
   const next=pl.find(x=>!d.eat[x.slot]),left=mt.k-tot[0],eaten=Object.keys(d.eat).length;
@@ -159,7 +159,7 @@ function viewDanas(){
   return `<header class="phead home"><div><div class="hello">${greet}${S.p.name?',':''}</div><h1>${S.p.name?esc(S.p.name.split(' ')[0]):'Tvoj dan'}</h1></div><button class="avatar" data-go="profil" aria-label="Profil">${S.p.name?esc(S.p.name.trim()[0].toUpperCase()):ic('user-circle')}</button></header>
   <div class="status">
     <button class="st-chip fire" data-gonag="navike">${icd('fire')}<b class="n">${st}</b><small>${st===1?'dan':'dana'} niz</small></button>
-    <button class="st-chip lvl" data-gonag="nagrade">${icd(lv.icon)}<b>${esc(lv.name)}</b><small class="n">${fmtK(lv.xp)} listića</small></button>
+    <button class="st-chip lvl" data-gonag="nagrade">${icd(lv.icon)}<b>${esc(lv.name)}</b><small class="n">${fmtK(lv.xp)} m</small></button>
     ${S.shields?`<button class="st-chip shield" data-gonag="navike" aria-label="Štitova: ${S.shields}">${icd('shield-check')}<b class="n">${S.shields}</b></button>`:''}
   </div>
   ${reportCard()}
@@ -223,13 +223,30 @@ function habitBars(){const ks=[...Array(7)].map((_,i)=>addDays(TODAY,i-6));const
   return `<section class="card"><h2 style="margin-bottom:12px">Voda i hod, 7 dana</h2>${row('Voda','drop','--blue',ks.map(k=>S.days[k]?S.days[k].water||0:0),wg,v=>litres(v)+' l')}${row('Hod','footprints','--accent',ks.map(k=>S.days[k]?S.days[k].walk||0:0),wt,v=>v+' min')}</section>`}
 function healthCard(){return `<section class="card"><h2 style="margin-bottom:4px">Imunitet i umor</h2>
     <div class="checks">${[['analize','Analize krvi','KKS, šećer, holesterol, vitamin D, gvožđe i feritin, B12, TSH.'],['apneja','Hrkanje i umor pomeni lekaru','Pauze u disanju tokom sna su česte kod veće kilaže.'],['vitd','Vitamin D preko zime','Doza po nalazu, uz dogovor sa lekarom.'],['fizijatar','Vežbe pokaži fizijatru','Pre nego što ih radiš svaki dan.']].filter(x=>x[0]!=='fizijatar'||S.p.back).map(x=>`<label class="ck ${S.health[x[0]]?'done':''}"><span class="shop-item" style="padding:0"><input type="checkbox" data-health="${x[0]}" ${S.health[x[0]]?'checked':''} aria-label="${esc(x[1])}"></span><span><b>${esc(x[1])}</b><span>${esc(x[2])}</span></span></label>`).join('')}</div></section>`}
-function plantCard(){const lv=levelOf(totalXP()),pct=Math.min(100,(lv.xp-lv.from)/(lv.to-lv.from)*100),tx=xpOfDay(TODAY);
-  return `<section class="plant-hero"><span class="plant-pot">${icd(lv.icon)}</span><div class="small" style="font-weight:700;color:var(--accent-ink)">Nivo ${lv.n}</div><h2>${esc(lv.name)}</h2>
+function mountainSVG(lv,done){const pct=done?1:Math.min(1,Math.max(0,(lv.xp-lv.from)/(lv.to-lv.from)));
+  const T=[[22,170],[92,156],[64,136],[138,122],[108,102],[170,88],[146,68],[196,50],[214,30]];let L=[0];for(let i=1;i<T.length;i++)L.push(L[i-1]+Math.hypot(T[i][0]-T[i-1][0],T[i][1]-T[i-1][1]));
+  const tl=L[L.length-1]*pct;let j=1;while(j<T.length-1&&L[j]<tl)j++;const u=(tl-L[j-1])/((L[j]-L[j-1])||1),P=[T[j-1][0]+(T[j][0]-T[j-1][0])*Math.min(1,u),T[j-1][1]+(T[j][1]-T[j-1][1])*Math.min(1,u)];
+  const done_=T.slice(0,j).concat([P]).map(p=>p.join(',')).join(' '),all=T.map(p=>p.join(',')).join(' ');
+  return `<svg class="mtn" viewBox="0 0 320 186" role="img" aria-label="${done?'Osvojen vrh':'Uspon'} ${esc(done?lv.name:lv.next)}">
+   <defs><linearGradient id="mtnA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".55"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".18"/></linearGradient>
+   <linearGradient id="mtnB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--coral,#F08A6E)" stop-opacity=".45"/><stop offset="1" stop-color="var(--coral,#F08A6E)" stop-opacity=".08"/></linearGradient></defs>
+   <path d="M0 186 L0 120 L52 82 L96 104 L150 58 L196 92 L250 52 L320 96 L320 186Z" fill="url(#mtnB)"/>
+   <path d="M0 186 L0 168 L70 118 L118 132 L214 26 L262 86 L290 74 L320 98 L320 186Z" fill="url(#mtnA)"/>
+   <path d="M214 26 L232 46 L222 44 L214 52 L206 44 L198 48Z" fill="#fff" opacity=".9"/>
+   <polyline points="${all}" fill="none" stroke="var(--ink)" stroke-opacity=".28" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round"/>
+   <polyline points="${done_}" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+   <g transform="translate(214 30)"><line x1="0" y1="0" x2="0" y2="-24" stroke="var(--ink)" stroke-width="2"/><path d="M0 -24 L18 -18 L0 -12Z" fill="var(--red)"/></g>
+   <circle cx="${P[0]}" cy="${P[1]}" r="12" fill="var(--accent)" opacity=".2" class="mtn-pulse"/><circle cx="${P[0]}" cy="${P[1]}" r="7" fill="var(--accent)" stroke="#fff" stroke-width="2.5"/>
+  </svg>`}
+function plantCard(){const lv=levelOf(totalXP()),pct=Math.min(100,(lv.xp-lv.from)/(lv.to-lv.from)*100),tx=xpOfDay(TODAY)*2,cur=Math.max(0,PEAKS.findIndex(p=>p[0]===lv.name));
+  return `<section class="mtn-hero"><div class="mtn-top"><div><div class="small" style="font-weight:700;color:var(--accent-ink)">Nivo ${lv.n} · uspon na</div><h2>${esc(lv.next)}</h2><div class="small muted n">${fmtK(lv.nextH)} m</div></div><div class="mtn-alt"><b class="n">${fmtK(R(lv.xp-lv.from))}</b><small>od ${fmtK(lv.nextH)} m</small></div></div>
+   ${mountainSVG(lv)}
    <div class="lvl-bar" role="progressbar" aria-valuenow="${R(pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
-   <div class="row between" style="width:100%"><span class="small n">${fmtK(lv.xp)} listića</span><span class="small muted">${lv.next?`još ${fmtK(lv.to-lv.xp)} do: ${esc(lv.next)}`:`još ${fmtK(lv.to-lv.xp)} do sledećeg nivoa`}</span></div>
-   <div class="small" style="font-weight:600">Danas si skupio ${tx} listića</div></section>
-  <section class="card"><h2 style="margin-bottom:12px">Kako rastu listići</h2><div class="earn">
-   ${[['Obrok po planu','+10'],['Čaša vode','+2'],['2 minuta hoda','+1'],['Vežbe za danas','+10'],['Izazov','+15'],['Sva 3 izazova','+30'],['Pitanje dana','+10'],['Kuvanje uz recept','+10'],['Jutarnji check-in','+5'],['Merenje kilaže','+5'],['Prekretnica','+25']].map(x=>`<div><span>${x[0]}</span><b class="n">${x[1]}</b></div>`).join('')}</div></section>`}
+   <div class="row between" style="width:100%"><span class="small">Danas <b class="n">+${tx} m</b></span><span class="small muted">Ukupno ${fmtK(lv.xp)} m</span></div></section>
+  <section class="card"><h2 style="margin-bottom:12px">Tvoji vrhovi</h2><div class="peaks">${PEAKS.slice(1,11).map((p,i)=>{const st=i+1<cur+1?'done':i+1===cur+1?'next':'';return `<div class="peak ${st}"><span>${st==='done'?ic('flag','sm'):icd('mountains','sm')}</span><b>${esc(p[0])}</b><small class="n">${fmtK(p[1])} m</small></div>`}).join('')}</div>
+   <p class="small muted" style="margin-top:10px">Posle Olimpa slede Mon Blan, Elbrus, Kilimandžaro, Akonkagva i Everest.</p></section>
+  <section class="card"><h2 style="margin-bottom:12px">Kako se penješ</h2><div class="earn">
+   ${[['Obrok po planu','+20 m'],['Čaša vode','+4 m'],['2 minuta hoda','+2 m'],['Vežbe za danas','+20 m'],['Izazov','+30 m'],['Sva 3 izazova','+60 m'],['Pitanje dana','+20 m'],['Kuvanje uz recept','+20 m'],['Jutarnji check-in','+10 m'],['Merenje kilaže','+10 m'],['Prekretnica','+50 m']].map(x=>`<div><span>${x[0]}</span><b class="n">${x[1]}</b></div>`).join('')}</div></section>`}
 function cookbookCard(){const P=cookbookPool(),n=P.filter(m=>S.tried[m.id]).length;
   return `<section class="card"><div class="sec-title"><h2>Moj kuvar</h2><span class="pill soft n">${n}/${P.length}</span></div>
    <div class="lvl-bar" style="background:var(--sunk)"><i style="width:${n/P.length*100}%"></i></div>
@@ -287,7 +304,7 @@ function viewTrening(){const cur=uiGet('tr','danas'),d=dayOf(),w=weekNo(),wt=wal
      <div class="row" style="margin-top:10px"><button class="icon-btn" data-trk="walk" data-v="-10" aria-label="Oduzmi 10 minuta">${ic('minus','sm')}</button><button class="btn sm" data-trk="walk" data-v="10">+10 min</button></div></div></section>
    <section class="card"><div class="sec-title"><h2>${esc(tr.title)}</h2>${tr.str?`<span class="pill soft">${icd('barbell')}snaga</span>`:''}</div>
     ${tr.ex.length?tr.ex.map((e,i)=>`<details class="ex"><summary><span class="num">${i+1}</span><span class="et"><b>${esc(e[0])}</b><span>${esc(e[1])}</span></span><span class="car">${ic('caret-right','sm')}</span></summary><p>${esc(e[2])}</p></details>`).join(''):`<p class="muted">${esc(tr.note)}</p>`}
-    ${tr.ex.length?`<button class="btn ${d.ex?'':'ghost'} block" style="margin-top:14px" data-ex="1">${ic('check','sm')}${d.ex?'Urađeno danas, +10 listića':'Označi kao urađeno'}</button>`:''}
+    ${tr.ex.length?`<button class="btn ${d.ex?'':'ghost'} block" style="margin-top:14px" data-ex="1">${ic('check','sm')}${d.ex?'Urađeno danas, +20 m uspona':'Označi kao urađeno'}</button>`:''}
     ${tr.ex.length&&tr.note?`<p class="small muted" style="margin-top:10px">${esc(tr.note)}</p>`:''}</section>`;
   else if(cur==='nedelja')body=`<section class="card"><h2 style="margin-bottom:12px">Ova nedelja</h2>
     <div class="weekplan">${DAYS.map((dn,i)=>{const k=addDays(TODAY,i-dIdx(TODAY));const t=trainingToday(k);const dd=S.days[k];return `<div class="wp ${k===TODAY?'cur':''}"><b>${dn}</b><span>${t.str?ic('barbell','sm'):ic('footprints','sm')}</span>${dd&&dd.ex?`<em>${ic('check','sm')}</em>`:''}</div>`}).join('')}</div>
@@ -309,7 +326,7 @@ viewProfil=(function(orig){return function(){const cur=+uiGet('prof','0');let h=
 /* ---------- Događaji ---------- */
 function v5click(e){const t=e.target.closest('button,[data-seg2]');if(!t)return;const ds=t.dataset;let handled=true;
   if(ds.seg2){const [g,v]=ds.seg2.split('|');S.ui[g]=v;save();hap();const tabsY=(document.querySelector('.segtabs')||{}).offsetTop||0;render();app.firstElementChild.style.animation='none';const sb=document.querySelector('.segbody');if(sb)sb.classList.add('seg-in');if(window.scrollY>tabsY-8)window.scrollTo(0,Math.max(0,tabsY-8))}
-  else if(ds.qclaim){const d=dayOf();d.q=d.q||{};d.q[ds.qclaim]=!d.q[ds.qclaim];save();hap(d.q[ds.qclaim]?'medium':'light');if(d.q[ds.qclaim])toast('Izazov ispunjen, +15 listića');rerender()}
+  else if(ds.qclaim){const d=dayOf();d.q=d.q||{};d.q[ds.qclaim]=!d.q[ds.qclaim];save();hap(d.q[ds.qclaim]?'medium':'light');if(d.q[ds.qclaim])toast('Izazov ispunjen, +30 m');rerender()}
   else if(ds.quiz){openSheet(quizSheet())}
   else if(ds.qa!==undefined){const d=dayOf();if(d.quiz)return;const q=QUIZ[quizIdx(TODAY)],a=+ds.qa;d.quiz={i:quizIdx(TODAY),a,ok:a===q[2]};save();hap(d.quiz.ok?'success':'medium');if(d.quiz.ok)confetti();sheetBody.innerHTML=quizSheet();rerender()}
   else if(ds.gonag){S.ui.nap=ds.gonag;go('napredak')}
@@ -325,7 +342,7 @@ app.addEventListener('input',e=>{if(e.target.id==='kSearch'){const q=norm(e.targ
 
 /* ---------- Podsetnik za niz ---------- */
 scheduleReminders=(function(orig){return async function(on=true){await orig(on);if(!on)return;const LN=PL('LocalNotifications');if(!LN)return;
-  try{const list=[];for(let i=0;i<7;i++){const key=addDays(iso(new Date()),i),at=new Date(key+'T20:30:00');if(at.getTime()>Date.now()+60000)list.push({id:5000+i,title:'Sačuvaj niz',body:'Upiši današnje obroke i vodu. Tvoja biljka te čeka.',schedule:{at,allowWhileIdle:true},smallIcon:'ic_stat_leaf',iconColor:'#12803E'})}
+  try{const list=[];for(let i=0;i<7;i++){const key=addDays(iso(new Date()),i),at=new Date(key+'T20:30:00');if(at.getTime()>Date.now()+60000)list.push({id:5000+i,title:'Sačuvaj niz',body:'Upiši današnje obroke i vodu. Vrh te čeka.',schedule:{at,allowWhileIdle:true},smallIcon:'ic_stat_leaf',iconColor:'#12803E'})}
     if(list.length)await LN.schedule({notifications:list})}catch(e){}}})(scheduleReminders);
 
 /* ---------- Novi dan ---------- */

@@ -1,0 +1,1 @@
+const MEAL_CREDITS={};
