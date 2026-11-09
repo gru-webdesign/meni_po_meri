@@ -5,7 +5,7 @@ function ringSVG(pct,size,stroke,id,a,b){const r=(size-stroke)/2,c=2*Math.PI*r,p
    ${p>0?`<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="url(#${id})" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p)}" style="transition:stroke-dashoffset .8s var(--ease)"/>`:''}</svg>`}
 function todayHero(){const d=dayOf(),pl=planFor(TODAY),mt=macroT(),tot=dayTotals(),left=mt.k-tot[0],pct=mt.k?tot[0]/mt.k:0,eaten=Object.values(d.eat).filter(Boolean).length;
   const mac=(lbl,v,mx,id,a,b)=>`<div class="mac">${ringSVG(mx?v/mx:0,40,5,id,a,b)}<b class="n">${R(v)}<small>/${R(mx)} g</small></b><span>${lbl}</span></div>`;
-  return `<section class="today" aria-label="Kalorije danas">
+  return `<section class="tday" aria-label="Kalorije danas">
    <div class="td-top"><div class="td-k"><span class="eyebrow">${left>=0?'Ostalo za danas':'Preko cilja'}</span><b class="n ${left<0?'over':''}">${fmtK(Math.abs(left))}</b><span class="u">kcal · cilj ${fmtK(mt.k)}</span></div>
     <div class="td-ring">${ringSVG(pct,112,11,'rgK','var(--ring-a)','var(--ring-b)')}<div class="c"><b class="n">${R(Math.min(pct,9.99)*100)}%</b><span>pojedeno</span></div></div></div>
    <div class="td-meals" aria-label="${eaten} od ${pl.length} obroka">${pl.map(x=>{const e=d.eat[x.slot];return `<i class="${e?(e.fr<1?'half':'on'):''}"></i>`}).join('')}<span>${eaten} od ${pl.length} obroka</span></div>

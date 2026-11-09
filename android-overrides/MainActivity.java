@@ -8,10 +8,10 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Sistemsko uvećanje teksta se poštuje, ali najviše do 130% da raspored ostane čitljiv
+        // Sistemsko uvećanje teksta se poštuje, ali najviše do 115% da raspored ostane čitljiv
         try {
             WebSettings s = getBridge().getWebView().getSettings();
-            if (s.getTextZoom() > 130) s.setTextZoom(130);
+            if (s.getTextZoom() > 115) s.setTextZoom(115);
         } catch (Exception ignored) {}
     }
 }
