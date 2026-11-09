@@ -57,3 +57,6 @@ function immunityCard(){const W=immunityWeek(),rows=IMM.map(c=>{const goal=c.per
    ${W.custom?`<p class="small muted" style="margin-top:10px">${W.custom} ${W.custom===1?'obrok upisan':'obroka upisana'} ručno nije uračunat, jer mu ne znamo sastojke.</p>`:''}
   </section>`}
 function healthCard(){return sleepCard()+immunityCard()}
+/* grami uključeni po podrazumevanom (jednom, posle toga važi izbor u profilu) */
+applyTheme=(function(orig){return function(){try{if(S&&!S.gramsV12){S.gramsV12=1;S.grams=true;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}}catch(e){}return orig()}})(applyTheme);
+if(typeof DEF!=='undefined')DEF.grams=true;
