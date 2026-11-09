@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#E4F3EA" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B1712" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#E7EDEA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B2220" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <title>Meni po meri</title>
 <style>
@@ -1357,6 +1357,70 @@ body.bigtext .mac span{grid-column:2!important}body.bigtext .mac b{grid-column:3
 .imm-sug{display:grid;gap:8px;margin-top:2px}
 .imm-sug button{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;text-align:left;background:var(--card);border-radius:14px;padding:6px 10px 6px 6px;box-shadow:var(--lift);font-size:14px;font-weight:600}
 .imm-sug .av-food{width:44px;height:44px;border-radius:12px}
+
+/* ================= v12: neumorfizam, kartice izrastaju iz pozadine ================= */
+:root{--bg:#E7EDEA;--surface:#E7EDEA;--surface-solid:#E7EDEA;--card:#E7EDEA;--hi:rgba(255,255,255,.95);--lo:rgba(142,166,154,.55);--line:rgba(30,70,50,.08);
+  --glass-bar:#E7EDEA;--glass-sheet:#E7EDEA;--ghost:#E7EDEA;--track:#DCE4E0;--night:#F2F6F4;--glow:0 6px 16px -6px color-mix(in oklab,var(--accent) 60%,transparent);
+  --raise:9px 9px 20px var(--lo),-9px -9px 20px var(--hi);--raise-sm:5px 5px 11px var(--lo),-5px -5px 11px var(--hi);--raise-xs:3px 3px 7px var(--lo),-3px -3px 7px var(--hi);
+  --inset:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi);--inset-sm:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi);
+  --card-shadow:var(--raise);--lift:var(--raise-sm)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B2220;--surface:#1B2220;--surface-solid:#1B2220;--card:#1B2220;--hi:rgba(255,255,255,.05);--lo:rgba(0,0,0,.6);--line:rgba(255,255,255,.06);
+  --glass-bar:#1B2220;--glass-sheet:#1B2220;--ghost:#1B2220;--track:#141A18;--night:#232C29;--glow:0 0 18px color-mix(in oklab,var(--accent) 55%,transparent);}}
+:root[data-theme="dark"]{--bg:#1B2220;--surface:#1B2220;--surface-solid:#1B2220;--card:#1B2220;--hi:rgba(255,255,255,.05);--lo:rgba(0,0,0,.6);--line:rgba(255,255,255,.06);
+  --glass-bar:#1B2220;--glass-sheet:#1B2220;--ghost:#1B2220;--track:#141A18;--night:#232C29;--glow:0 0 18px color-mix(in oklab,var(--accent) 55%,transparent);}
+html,body{background:var(--bg)!important}
+body::before{display:none}
+body::after{background:var(--bg)!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+.rpl-h{display:none}
+button:active,.btn:active{filter:none}
+/* izdignute površine */
+.card,.act-card,.excard,.kcard,.tile,.next2,.mtn-hero,.tday,.why,.progx,.wocard,.nxt,.pacec,.progc,.exrow,.sheet-panel,.lvlup .box,.wo-stage{background:var(--card)!important;border:0!important;box-shadow:var(--raise)!important}
+.tday::after{display:none}
+.progx{--pg:var(--card)}
+.sheet-panel{box-shadow:0 -10px 30px -10px var(--lo)!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+nav.tabs{background:var(--bg)!important;box-shadow:var(--raise)!important;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.segtabs{background:var(--bg)!important;border:0!important;box-shadow:var(--inset-sm)!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+/* udubljena polja */
+.mac,.se-stats div,.se-empty,.se-ins > div,.imm-tip,.nums div,.nut div,.wp,.wo-th,.sh-more,.note,.srch,.cu-tot div,.peak,.ins,.mtn-alt,.ingr,.misslist,.earn > div{background:var(--bg)!important;border:0!important;box-shadow:var(--inset-sm)!important}
+.nums div:first-child,.cu-tot div:first-child{color:var(--ink)}
+.nums div:first-child span{color:var(--muted)}
+input[type=text],input[type=search],input[type=number],select,textarea,.mono-ta{background:var(--bg)!important;border:0!important;box-shadow:var(--inset-sm)!important}
+.srch input{box-shadow:none!important}
+.hab-bar,.imm-bar,.td-meals i,.lvl-bar,.mb-track,.se-bar,.wiz-prog,.cook-prog,.kb-col{background:var(--track)!important;box-shadow:inset 2px 2px 4px var(--lo),inset -2px -2px 4px var(--hi)!important}
+.td-meals i.on{background:linear-gradient(90deg,var(--ring-a),var(--ring-b))!important;box-shadow:var(--glow)!important}
+.nxt-m span{background:var(--bg)!important;box-shadow:var(--inset-sm)}
+/* izdignuta dugmad, pritisak = udubljenje */
+.btn.ghost,.icon-btn,.rb,.rbtn,.chip-t,.fchips .chip-t,.chips .chip-t,.imm-sug button,.sug,.st-chip,.avatar,.day,.sh-x,.tick,.thm,.qi,.act,.seg5 button,.days7 .chip-t,.phdel{background:var(--bg)!important;border:0!important;box-shadow:var(--raise-xs)!important;transition:box-shadow .18s ease,color .2s,background-color .2s}
+.btn.ghost:active,.icon-btn:active,.rb:active,.rbtn:active,.chip-t:active,.imm-sug button:active,.sug:active,.day:active,.sh-x:active,.tick:active,.qi:active,.act:active,.avatar:active,.seg5 button:active,.mrow .open:active,.progx:active,.excard:active,.kcard:active,.exrow:active,.progc:active{box-shadow:var(--inset-sm)!important}
+.btn{background:var(--accent)!important;color:var(--on-accent)!important;border:0;box-shadow:var(--raise-sm),var(--glow)!important;transition:box-shadow .18s ease}
+.btn:active{box-shadow:inset 3px 3px 7px rgba(0,0,0,.25),inset -2px -2px 5px rgba(255,255,255,.18)!important}
+.btn.cta{background:linear-gradient(135deg,var(--coral),#F39A77)!important;color:#fff!important;box-shadow:var(--raise-sm),0 8px 18px -8px var(--coral)!important}
+.btn.ghost{color:var(--ink)!important}
+.rb.plus{background:var(--accent)!important;color:var(--on-accent)!important;box-shadow:var(--raise-xs),var(--glow)!important}
+.hab.water .rb.plus{background:var(--blue)!important;box-shadow:var(--raise-xs),0 6px 14px -6px var(--blue)!important}
+.hab.cola .rb.plus{background:var(--coral)!important;box-shadow:var(--raise-xs),0 6px 14px -6px var(--coral)!important}
+/* izabrano = udubljeno ili akcent */
+.chip-t.on,.fchips .chip-t.on,.chips .chip-t.on,.seg5 button.on,.days7 .chip-t.on{background:var(--accent)!important;color:var(--on-accent)!important;box-shadow:var(--inset-sm),var(--glow)!important}
+.seg{background:var(--bg)!important;box-shadow:var(--inset-sm)!important}
+.seg button.on,.segtabs button.on{background:var(--accent)!important;color:var(--on-accent)!important;box-shadow:var(--raise-xs),var(--glow)!important}
+.day.on{background:var(--accent)!important;color:var(--on-accent)!important;box-shadow:var(--inset-sm),var(--glow)!important}
+.tick.on,.mrow.done .tick,.tick.half{box-shadow:var(--inset-sm)!important}
+.thm{box-shadow:var(--inset-sm)!important}
+.thm::before{background:var(--bg);box-shadow:var(--raise-xs)}
+.st-chip{box-shadow:var(--raise-sm)!important}
+.av-food{box-shadow:var(--raise-xs)}
+.av-food.ph img{border-radius:inherit}
+/* traka: aktivni tab u udubljenom krugu sa sjajem */
+.tab{position:relative}
+.tab.on::after{display:none}
+.tab.on .ic{filter:drop-shadow(0 0 6px color-mix(in oklab,var(--accent) 70%,transparent))}
+.tab.on::before{content:"";position:absolute;top:5px;left:50%;width:46px;height:34px;transform:translateX(-50%);border-radius:14px;box-shadow:var(--inset-sm)}
+/* zaglavlje */
+.phead h1{text-shadow:none}
+.toast{background:var(--bg)!important;color:var(--ink)!important;box-shadow:var(--raise)!important;border:0!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+.toast .undo{color:var(--accent)}
+.cook,.wo{background:var(--bg)!important}
+.sheet-bg{background:rgba(0,0,0,.18)}
 </style>
 </head>
 <body>

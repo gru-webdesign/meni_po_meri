@@ -243,7 +243,7 @@ document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.active
 /* ---------- Tema i sistemske trake ---------- */
 function applyTheme(){const r=document.documentElement;if(S.theme==='light'||S.theme==='dark')r.setAttribute('data-theme',S.theme);else r.removeAttribute('data-theme');
   const dark=S.theme==='dark'||(S.theme!=='light'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
-  document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.setAttribute('content',dark?'#0B1712':'#E4F3EA'));
+  document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.setAttribute('content',dark?'#1B2220':'#E7EDEA'));
   try{const SB=PL('SystemBars');if(SB)SB.setStyle({style:dark?'DARK':'LIGHT'}).catch(()=>{})}catch(e){}}
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(!S.theme||S.theme==='auto')applyTheme()})}catch(e){}
 
