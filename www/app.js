@@ -411,8 +411,8 @@ function scrollEnd(){window.scrollTo({top:document.body.scrollHeight,behavior:'s
 
 /* ================= SHEET ================= */
 const sheet=document.getElementById('sheet'),sheetBody=document.getElementById('sheetBody');let lastFocus=null;
-function openSheet(html){lastFocus=document.activeElement;sheetBody.innerHTML=html;sheet.hidden=false;requestAnimationFrame(()=>requestAnimationFrame(()=>sheet.classList.add('open')))}
-function closeSheet(){if(sheet.hidden)return;sheet.classList.remove('open');setTimeout(()=>{sheet.hidden=true;sheetBody.innerHTML='';if(lastFocus&&document.body.contains(lastFocus))lastFocus.focus({preventScroll:true})},300)}
+let sheetTok=0;function openSheet(html){sheetTok++;lastFocus=document.activeElement;sheetBody.innerHTML=html;sheet.hidden=false;requestAnimationFrame(()=>requestAnimationFrame(()=>sheet.classList.add('open')))}
+function closeSheet(){if(sheet.hidden)return;sheet.classList.remove('open');const tk=sheetTok;setTimeout(()=>{if(tk!==sheetTok)return;sheet.hidden=true;sheetBody.innerHTML='';if(lastFocus&&document.body.contains(lastFocus))lastFocus.focus({preventScroll:true})},300)}
 const closeBtn=`<button class="icon-btn" data-close="1" aria-label="Zatvori">${ic('x')}</button>`;
 function mealSheet(key,slot){
   const x=planFor(key)[slot],m=x.meal,t=m.nt,isToday=key===TODAY,e=isToday&&dayOf().eat[slot],pp=S.p.partner==='da';
