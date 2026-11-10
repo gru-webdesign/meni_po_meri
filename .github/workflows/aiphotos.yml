@@ -1,0 +1,55 @@
+name: AI fotografije jela
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: samo ova jela (zarezom), prazno = sva
+        default: ''
+      seeds:
+        default: '11,23'
+permissions:
+  contents: write
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu && pip install diffusers==0.31.0 transformers==4.46.3 accelerate safetensors pillow
+      - name: Generisanje
+        env:
+          SEEDS: ${{ github.event.inputs.seeds }}
+        run: python tools/aiphotos/gen.py ${{ matrix.shard }} 20 "${{ github.event.inputs.ids }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-${{ matrix.shard }}
+          path: out/
+          if-no-files-found: ignore
+  collect:
+    needs: gen
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - run: pip install pillow && python tools/aiphotos/sheets.py
+      - name: Grana ai-photos
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git fetch origin ai-photos || true
+          if git rev-parse --verify origin/ai-photos >/dev/null 2>&1; then git checkout -B ai-photos origin/ai-photos; git checkout ${{ github.sha }} -- tools/aiphotos/*.py tools/aiphotos/*.json || true; else git checkout -B ai-photos; fi
+          mkdir -p tools/aiphotos/raw && cp out/*.jpg tools/aiphotos/raw/
+          rm -rf out && mkdir out && cp tools/aiphotos/raw/*.jpg out/ && rm -rf tools/aiphotos/review && pip install pillow -q && python tools/aiphotos/sheets.py
+          git add -A tools/aiphotos
+          git commit -m "AI fotografije jela" || true
+          git push -f origin ai-photos
