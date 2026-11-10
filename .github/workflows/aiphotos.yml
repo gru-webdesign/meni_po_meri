@@ -2,6 +2,9 @@ name: AI fotografije jela
 on:
   workflow_dispatch:
     inputs:
+      collect_run:
+        description: samo skupi slike iz ranijeg pokretanja (run id)
+        default: ''
       ids:
         description: samo ova jela (zarezom), prazno = sva
         default: ''
@@ -9,8 +12,10 @@ on:
         default: '11,23'
 permissions:
   contents: write
+  actions: read
 jobs:
   gen:
+    if: github.event.inputs.collect_run == ''
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -41,7 +46,8 @@ jobs:
         with:
           path: out
           merge-multiple: true
-      - run: pip install pillow && python tools/aiphotos/sheets.py
+          run-id: ${{ github.event.inputs.collect_run || github.run_id }}
+          github-token: ${{ github.token }}
       - name: Grana ai-photos
         run: |
           git config user.name "github-actions"
