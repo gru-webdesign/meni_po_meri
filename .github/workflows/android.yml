@@ -16,6 +16,9 @@ jobs:
       UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
       UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
       UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+      RC_API_KEY: ${{ secrets.RC_API_KEY }}
+      ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
+      ADMOB_BANNER_ID: ${{ secrets.ADMOB_BANNER_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,9 +34,13 @@ jobs:
       - name: Instalacija paketa
         run: npm ci
 
+      - name: Podešavanja za naplatu i reklame (APK za testiranje)
+        run: echo "window.MPM_CFG={rcKey:'${RC_API_KEY}',test:true,banner:''};" > www/config.js
+
       - name: Android projekat, ikonice i splash
         run: |
           npx cap add android
+          node android-overrides/add-admob-meta.js
           npx capacitor-assets generate --android
           mkdir -p android/app/src/main/res/drawable
           cp assets/ic_stat_leaf.png android/app/src/main/res/drawable/ic_stat_leaf.png
@@ -69,6 +76,8 @@ jobs:
         if: env.UPLOAD_KEYSTORE_BASE64 != ''
         working-directory: android
         run: |
+          echo "window.MPM_CFG={rcKey:'${RC_API_KEY}',test:false,banner:'${ADMOB_BANNER_ID}'};" > ../www/config.js
+          (cd .. && npx cap copy android)
           ./gradlew bundleRelease --no-daemon
           cp app/build/outputs/bundle/release/app-release.aab ../meni-po-meri.aab
 

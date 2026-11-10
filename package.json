@@ -2,7 +2,7 @@
   "name": "meni-po-meri",
   "version": "1.0.0",
   "private": true,
-  "description": "Meni po meri: li\u010dni plan ishrane i pra\u0107enje",
+  "description": "Meni po meri: lični plan ishrane i praćenje",
   "scripts": {
     "android:prepare": "cap add android && capacitor-assets generate --android && cap sync android"
   },
@@ -15,7 +15,9 @@
     "@capacitor/local-notifications": "8.3.1",
     "@capacitor/preferences": "8.0.1",
     "@capacitor/share": "8.0.3",
-    "@capacitor-community/keep-awake": "8.0.0"
+    "@capacitor-community/keep-awake": "8.0.0",
+    "@revenuecat/purchases-capacitor": "14.1.0",
+    "@capacitor-community/admob": "8.3.0"
   },
   "devDependencies": {
     "@capacitor/assets": "3.0.5",
