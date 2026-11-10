@@ -56,4 +56,4 @@ Upisi se čuvaju na telefonu (i u Android rezervnoj kopiji). Za prelazak na drug
 
 ## Fotografije jela
 
-Fotografije su sa Openverse i Wikimedia Commons, pod licencama CC0, javno dobro, CC BY i CC BY-SA. Autori i licence su u `www/img/meals/credits.js` i u aplikaciji (Profil → Aplikacija → Izvori fotografija). Alat za pretragu i izbor je `tools/photos` i GitHub Actions „Fotografije jela”.
+Fotografije svih 78 jela su generisane modelom Stable Diffusion XL 1.0 (licenca CreativeML Open RAIL++-M, dozvoljava komercijalnu upotrebu), u jednom stilu: svetla posuda, lan, dnevno svetlo. Opisi jela su u `tools/aiphotos/dishes.json` (ispravke u `extra.json`). Generisanje ide na GitHub Actions („AI fotografije jela”), sirove slike se skupljaju u granu `ai-photos`, a `tools/aiphotos/integrate.py` ih iseca u `www/img/meals`.
